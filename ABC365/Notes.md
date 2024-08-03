@@ -27,7 +27,7 @@ For each game, we always have two options, since we are never allowed to play th
 
 If we are choosing to win, then we once again look at the other 2 options since we didn't play this move last game. Take the better of the two, but add a win since we are choosing to win this game.
 
-At the end, look at the end of each row to see which "path" was optimal: dp[ROCK][n], dp[PAPER][n], or dp[SCISSORS][n]
+At the end, look at the end of each row to see which "path" was optimal: `dp[ROCK][n]`, `dp[PAPER][n]`, or `dp[SCISSORS][n]`
 
 
 
