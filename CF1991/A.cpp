@@ -26,7 +26,7 @@ void solve() {
             an even number of elements to the right in order for this
             element to be a candidate for last remaining.
         */
-        if (i % 2 == 0 || n-i-1 % 2 == 0)
+        if (i % 2 == 0)
         {
             best = max(best, x);
         }
