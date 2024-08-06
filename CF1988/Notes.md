@@ -1,6 +1,6 @@
 Notes on solutions/approaches to problems
 
-# A
+# A: Split the Multiset
 If n is 1, we are already done so just print 0.
 
 We can split off $k-1$ 1s each operation. We need to split off $n-1$ 1s to be done.
@@ -8,7 +8,7 @@ We can split off $k-1$ 1s each operation. We need to split off $n-1$ 1s to be do
 So, this will require $(n-1)/(k-1)$ operations, rounded up. To round up, we add $denominator-1$ to the numerator.
 
 So the answer is $(n-1+k-2)/(k-1) = (n+k-3)/(k-1)$.
-# B
+# B: Make Majority
 
 ## Step 1
 Clearly, it is optimal to remove as many 0s as we can by compressing any streak of 0s into a single 0.
@@ -28,7 +28,7 @@ All 0s are separated by 1s after Step 1. If we do not have a majority of 1s, thi
 
 So, we definitely need a majority of 1s, and that is always sufficient. So we perform step 1 and then check if the number of 1s is greater than the number of 0s.
 
-# C
+# C: Increasing Sequence with Fixed Or
 
 ## Length
 Let b be the number of bits that are 1 in the binary representation of n (also known as the popcount of n). If b=1, the length of the sequence is 1 (the sequence is just the number n, clearly). Otherwise, the length is b+1.
