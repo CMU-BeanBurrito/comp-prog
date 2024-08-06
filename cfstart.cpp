@@ -12,7 +12,7 @@ using namespace __gnu_pbds;
 using namespace std;
 using ll = long long;
 
-#define MOD 1000000007
+#define MOD 1'000'000'007
 
 void solve() {
     
