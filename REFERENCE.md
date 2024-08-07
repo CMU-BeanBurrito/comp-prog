@@ -10,15 +10,15 @@ REFERENCE FOR COMPETITIVE PROGRAMMING:
 
 # Extended Euclidean Algorithm
 - Inputs: integers a, b
-- Outputs: integers x, y s.t. $`a*x + b*y = gcd(a, b)`$
+- Outputs: integers x, y s.t. ax + by = gcd(a, b)
 
 Can be used to find modular inverse of a under M (find x s.t. a*x mod M = 1)
 
 Note that it contains the Euclidean GCD algorithm.
 
-- Set b = M, then $`ax + My = 1 mod M`$
-- $`My = 0 mod M`$
-- $`ax = 1 mod M`$
+- Set b = M, then ax + My = 1 mod M
+- My = 0 mod M
+- ax = 1 mod M
 
 ```
 int gcdExt(int a, int b, int* x, int* y)
