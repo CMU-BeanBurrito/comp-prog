@@ -59,10 +59,6 @@ Iterate over all numbers starting with 2 (the first prime). If it has not been f
 If it has been filtered out already, it is already known to be composite so we do nothing and move to the next number. Every multiple of this number has already been eliminated as well.
 
 The code below generates a lookup table in O(N log N) where N is the size of the table (in this case, 2E5). It will allow us to check the primality of numbers up to N in constant time. 
-
-## Checking larger numbers
-However, it will also allow us to check the primality of numbers up to N^2 in O(N) time (we can check all primes in our sieve, if the number does not have any of them as factors, it is also prime). If we need to check multiple numbers that are betwen N and N^2, we can construct another vector with just the primes from our sieve. This would make each query to numbers between N and N^2 take O(N / logN) time. 
-
 ```
 vector<bool> erat (200001, true);
  
@@ -80,5 +76,44 @@ void sieve()
             erat[i] = false;
         }
     }
+}
+```
+
+## Checking larger numbers
+However, it will also allow us to check the primality of numbers up to N^2 in O(N) time (we can check all primes in our sieve, if the number does not have any of them as factors, it is also prime). If we need to check multiple numbers that are betwen N and N^2, we can construct another vector with just the primes from our sieve. This would make each query to numbers between N and N^2 take O(N / logN) time. Of course, make sure to account for integer overflow.
+
+```
+vector<bool> erat (200001, true);
+vector<int> primes;
+void sieve()
+{
+    erat[0] = false;
+    erat[1] = false;
+ 
+    for (int i = 2; i*i <= 200000; i++)
+    {
+        if (!erat[i]) continue;
+ 
+        for (int j = 2*i; j <= 200000; j+=i)
+        {
+            erat[i] = false;
+        }
+    }
+
+    for (int i = 0; i < 200001; i++)
+    {
+        if (erat[i]) primes.push_back(i);
+    }
+}
+
+// n should be less than or equal to N^2 (in this case, N^2 = 4E10)
+bool check(ll n)
+{
+    for (int p : primes)
+    {
+        if (n % p == 0) return false;
+    }
+
+    return true;
 }
 ```
