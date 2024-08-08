@@ -93,11 +93,7 @@ void sieve()
     for (int i = 2; i*i <= 200000; i++)
     {
         if (!erat[i]) continue;
- 
-        for (int j = 2*i; j <= 200000; j+=i)
-        {
-            erat[i] = false;
-        }
+        for (int j = 2*i; j <= 200000; j+=i) erat[i] = false;
     }
 
     for (int i = 0; i < 200001; i++)
