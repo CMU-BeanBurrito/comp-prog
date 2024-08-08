@@ -17,8 +17,8 @@ Can be used to find modular inverse of a under M (find x s.t. a*x mod M = 1)
 Note that it contains the Euclidean GCD algorithm.
 
 - Set b = M, then ax + My = 1 mod M
-- My = 0 mod M
-- ax = 1 mod M
+- Also, My = 0 mod M
+- Therefore, ax = 1 mod M
 
 ```
 int gcdExt(int a, int b, int* x, int* y)
