@@ -50,3 +50,66 @@ int inv (int a, int m) // modular inverse of a mod m
 }
 
 ```
+# Sieve of Eratosthenes
+
+Used to quickly generate a lookup table for prime numbers (precomputed and used many times across many tests). The general idea is to slowly filter/sieve out composite numbers by taking a prime number p and eliminating all other numbers that have p as a factor.
+
+Iterate over all numbers starting with 2 (the first prime). If it has not been filtered out yet, it is prime. If it was composite, it would have been filtered out already because there would be at least one less number that is a factor. Since this number is prime, mark all multiples of it (aside from itself) as composite.
+
+If it has been filtered out already, it is already known to be composite so we do nothing and move to the next number. Every multiple of this number has already been eliminated as well.
+
+The code below generates a lookup table in O(N log N) where N is the size of the table (in this case, 2E5). It will allow us to check the primality of numbers up to N in constant time. 
+```
+vector<bool> erat (200001, true);
+ 
+void sieve()
+{
+    erat[0] = false;
+    erat[1] = false;
+ 
+    for (int i = 2; i*i <= 200000; i++)
+    {
+        if (!erat[i]) continue;
+ 
+        for (int j = 2*i; j <= 200000; j+=i)
+        {
+            erat[i] = false;
+        }
+    }
+}
+```
+
+## Checking larger numbers
+However, it will also allow us to check the primality of numbers up to N^2 in O(N) time (we can check all primes in our sieve, if the number does not have any of them as factors, it is also prime). If we need to check multiple numbers that are betwen N and N^2, we can construct another vector with just the primes from our sieve. This would make each query to numbers between N and N^2 take O(N / logN) time. Of course, make sure to account for integer overflow if N^2 exceeds INT_MAX (argument is long long in this case as 4E10 > INT_MAX).
+
+```
+vector<bool> erat (200001, true);
+vector<int> primes;
+void sieve()
+{
+    erat[0] = false;
+    erat[1] = false;
+ 
+    for (int i = 2; i*i <= 200000; i++)
+    {
+        if (!erat[i]) continue;
+        for (int j = 2*i; j <= 200000; j+=i) erat[i] = false;
+    }
+
+    for (int i = 0; i < 200001; i++)
+    {
+        if (erat[i]) primes.push_back(i);
+    }
+}
+
+// n should be less than or equal to N^2 (in this case, N^2 = 4E10)
+bool check(ll n)
+{
+    for (int p : primes)
+    {
+        if (n % p == 0) return false;
+    }
+
+    return true;
+}
+```
