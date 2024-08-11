@@ -1,6 +1,51 @@
 REFERENCE FOR COMPETITIVE PROGRAMMING:
 
 # Prefix Sums
+Useful for many things, too many to list here. As a general idea, they are used as precomputation so we can check the total value of a segment in an array in constant time as opposed to time proportional to the length of the segment.
+
+To build it, create another array. Depending on the situation, it might useful to pad with an initial 0. Otherwise, just add the prefix sum from the previous index and the current element to get the current prefix sum.
+
+## 2D Prefix Sum 
+For visualization purposes, assume that rows further down have higher row indices, columns further right have higher column indices.
+
+In a 2D prefix sum p of 2D array a, p[i][j] is the sum of all a[r][c] where r <= i and c <= j. Essentially, it is the sum of the rectanble from a[0][0] to a[i][j].
+
+The first row and column of the prefix sum can be calculated as 1D prefix sums: p[0][1] = p[0][0] + a[0][1], p[0][2] = p[0][1] + a[0][2], etc.
+
+However, subsequent cells require 4 values to calculate:
+- the cell above: p[i-1][j]
+- the cell to the left: p[i][j-1]
+- the cell one diagonal to the top left: p[i-1][j-1]
+- of course, a[i][j]
+
+The cell above contains the sum of the rectangle from a[0][0] to a[i-1][j].
+The cell to the left contains the sum of the rectangle from a[0][0] to a[i][j-1].
+However, these two rectangles overlap. The overlap is the rectangle from a[0][0] to a[i-1][j-1]. Since we count this twice, we need to subtract it from the sum of the other two cells.
+
+So the prefix sum for p[i][j] is: a[i][j] + a[i-1][j] + a[i][j-1] - a[i-1][j-1]. See the following section for visualization.
+
+To get the sum of a rectangle within the array, say, the sum of a[r1][c1] to a[r2][c2]. We need to take the prefix sum of a[r2][c2] and subtract the prefix sum of a[r1-1][c2] and subtract the prefix sum of a[r2][c1-1]. However, both of these contain the prefix sum of a[r1-1][c1-1]. We do want to subtract this, but only once. Since we subtracted it twice, we need to add it once.
+
+So the sum of cells a[r1][c1] to a[r2][c2] is: p[r2][c2] - p[r2][c1-1] - p[r1-1][c2] + p[r1-1][c1-1]. See the following section for visualization.
+
+### Visualization of 2D Prefix Sum Overlap
+
+#### Computing the prefix sum:
+
+To calculate the prefix sum of the blue square, we need the sum of the the orange, red, and yellow squares.
+
+The red square with the 'x' has the prefix sum of the red and orange squares.
+The yellow square with the 'x' has the prefix sum of the yellow and orange squares.
+
+If we add the red and yellow squares that have an 'x', we will have the sum of the orange squares times two, plus the sum of the red squares and yellow squares. So, we need to subtract the sum of the orange squares which is the orange square with the 'x'.
+
+![image info](images/2D Prefix Sum Building.png)
+
+#### Extracting a sum from a prefix sum:
+
+We want to get the sum of the green cells, but the green cell with x contains the sum of the green, red, blue, and purple cells. So, we subtract the prefix sum of the blue cells (blue cell with 'x'), and subtract the prefix sum of the red cells (red cell with 'x'). However, both the blue cell with the 'x' and the red cell with 'x' contain the sum of the purple cells as well. Since we subtracted the blue and red, we also subtracted the purple twice. However, we only want to subtract it once. So, we we need to add it back once. So we add the prefix sum of the purple cells (purple cell with an 'x'). 
+
+![image info](images/2D Prefix Sum Extracting.png)
 
 # Binary Search
 
