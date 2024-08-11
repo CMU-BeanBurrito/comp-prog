@@ -47,6 +47,8 @@ We want to get the sum of the green cells, but the green cell with x contains th
 
 ![image info](images/2D%20Prefix%20Sum%20Extracting.png)
 
+## 3D Prefix Sum
+
 # Binary Search
 
 # Depth-First Search
