@@ -39,13 +39,13 @@ The yellow square with the 'x' has the prefix sum of the yellow and orange squar
 
 If we add the red and yellow squares that have an 'x', we will have the sum of the orange squares times two, plus the sum of the red squares and yellow squares. So, we need to subtract the sum of the orange squares which is the orange square with the 'x'.
 
-![image info](images/2D Prefix Sum Building.png)
+![image info](images/2D%20Prefix%20Sum%20Building.png)
 
 #### Extracting a sum from a prefix sum:
 
 We want to get the sum of the green cells, but the green cell with x contains the sum of the green, red, blue, and purple cells. So, we subtract the prefix sum of the blue cells (blue cell with 'x'), and subtract the prefix sum of the red cells (red cell with 'x'). However, both the blue cell with the 'x' and the red cell with 'x' contain the sum of the purple cells as well. Since we subtracted the blue and red, we also subtracted the purple twice. However, we only want to subtract it once. So, we we need to add it back once. So we add the prefix sum of the purple cells (purple cell with an 'x'). 
 
-![image info](images/2D Prefix Sum Extracting.png)
+![image info](images/2D%20Prefix%20Sum%20Extracting.png)
 
 # Binary Search
 
