@@ -8,7 +8,7 @@ Notes on solutions/approaches to problems
 
 # D: Fun
 
-For a particular value of `a`, there are at most $\frac{n}{a}$  values of `b` we should consider. Across all values of `a`, this means we have $n + \frac{n}{2} + \frac{n}{3} + .... \frac{n}{n}$ values of `b` to consider. This simplifies to O(n log n) - harmonic series. So we can consider all values of `a` and `b`.
+For a particular value of `a`, there are at most $\Huge\frac{n}{a}$  values of `b` we should consider. Across all values of `a`, this means we have $n + \frac{n}{2} + \frac{n}{3} + .... \frac{n}{n}$ values of `b` to consider. This simplifies to O(n log n) - harmonic series. So we can consider all values of `a` and `b`.
 
 For each pair `a` and `b`, we can find the number of valid triplets in constant time. We simply need to find the maximum value of `c` such that the constraints are met. Clearly, any value of `c` lower than this maximum value will also work for this `a` and `b`. To find this maximum value, solve for `c` in both of the equations and take the minimum. 
 
