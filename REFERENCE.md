@@ -112,7 +112,7 @@ int inv (int a, int m) // modular inverse of a mod m
 }
 
 ```
-# Sieve of Eratosthenes
+## Sieve of Eratosthenes
 
 Used to quickly generate a lookup table for prime numbers (precomputed and used many times across many tests). The general idea is to slowly filter/sieve out composite numbers by taking a prime number p and eliminating all other numbers that have p as a factor.
 
