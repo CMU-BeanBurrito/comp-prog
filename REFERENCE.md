@@ -1,11 +1,13 @@
 REFERENCE FOR COMPETITIVE PROGRAMMING:
 
-# Prefix Sums
+# Basic Competitive Programming Concepts
+
+## Prefix Sums
 Useful for many things, too many to list here. As a general idea, they are used as precomputation so we can check the total value of a segment in an array in constant time as opposed to time proportional to the length of the segment.
 
 To build it, create another array. Depending on the situation, it might useful to pad with an initial 0. Otherwise, just add the prefix sum from the previous index and the current element to get the current prefix sum. For example, `prefix_sum[i] = prefix_sum[i-1] + array[i]`
 
-## 2D Prefix Sum 
+### 2D Prefix Sum 
 For visualization purposes, assume that rows further down have higher row indices, columns further right have higher column indices.
 
 In a 2D prefix sum p of 2D array a, `p[i][j]` is the sum of all `a[r][c]` where `r <= i and c <= j`. Essentially, it is the sum of the rectangle from `a[0][0]` to `a[i][j]`.
@@ -28,9 +30,9 @@ To get the sum of a rectangle within the array, say, the sum of `a[r1][c1]` to `
 
 So the sum of cells `a[r1][c1]` to `a[r2][c2]` is: `p[r2][c2]` - `p[r2][c1-1]` - `p[r1-1][c2]` + `p[r1-1][c1-1]`. See the following section for visualization.
 
-### Visualization of 2D Prefix Sum Overlap
+#### Visualization of 2D Prefix Sum Overlap
 
-#### Computing the prefix sum:
+##### Computing the prefix sum:
 
 To calculate the prefix sum of the blue square, we need the sum of the the orange, red, and yellow squares.
 
@@ -41,21 +43,34 @@ If we add the red and yellow squares that have an 'x', we will have the sum of t
 
 ![image info](images/2D%20Prefix%20Sum%20Building.png)
 
-#### Extracting a sum from a prefix sum:
+##### Extracting a sum from a prefix sum:
 
 We want to get the sum of the green cells, but the green cell with x contains the sum of the green, red, blue, and purple cells. So, we subtract the prefix sum of the blue cells (blue cell with 'x'), and subtract the prefix sum of the red cells (red cell with 'x'). However, both the blue cell with the 'x' and the red cell with 'x' contain the sum of the purple cells as well. Since we subtracted the blue and red, we also subtracted the purple twice. However, we only want to subtract it once. So, we we need to add it back once. So we add the prefix sum of the purple cells (purple cell with an 'x'). 
 
 ![image info](images/2D%20Prefix%20Sum%20Extracting.png)
 
-## 3D Prefix Sum
+### 3D Prefix Sum
 
-# Binary Search
+# Basic Algorithms
 
-# Depth-First Search
+## Binary Search
 
-# Breadth-First Search
+## Depth-First Search
 
-# Extended Euclidean Algorithm
+## Breadth-First Search
+
+## Dijkstra's Algorithm
+
+# Number Theory and Primality
+
+## Consecutive Numbers
+- Consecutive numbers are coprime.
+
+gcd(x+1, x) must also divide x+1-x = 1. Trivially, only 1 can divide 1. So gcd(x+1, x) = 1. 
+
+Therefore x and x+1 are coprime.
+
+## Extended Euclidean Algorithm
 - Inputs: integers a, b
 - Outputs: integers x, y s.t. ax + by = gcd(a, b)
 
@@ -160,4 +175,3 @@ bool check(ll n)
     return true;
 }
 ```
-# Dijkstra's Algorithm
