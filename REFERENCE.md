@@ -65,7 +65,10 @@ Clearly, if our max capacity is 0, or we are including 0 items, the max value we
 
 Now, for each item, we consider whether or not to add it given each capacity. Our DP has the following logic:
 
-If the capacity `j >= w[i]`, then it is possible to put this ith item in our knapsack. However, we may or may not have to remove some items in our knapsack. Let's first consider the case that we do not take it. Then, the max value we can have for this scenario is `dp[i-1][j]` since we basically just using the first i-1 items. The second case is that we do take this item. However, we might have to remove some items. If our current capacity is j, then the items that remain in our knapsack must have total weight at most `j-w[i]`. So, we want the max value we can get considering the first `i-1` items that have weight at most `j-w[i]`. This value is `dp[i-1][j-w[i]]`. 
+If the capacity `j >= w[i]`, then it is possible to put this ith item in our knapsack. However, we may or may not have to remove some items in our knapsack. 
+- Let's first consider the case that we do not take it. Then, the max value we can have for this scenario is `dp[i-1][j]` since we basically just using the first i-1 items.
+- The second case is that we do take this item. However, we might have to remove some items. If our current capacity is j, then the items that remain in our knapsack must have total weight at most `j-w[i]`. So, we want the max value we can get considering the first `i-1` items that have weight at most `j-w[i]`. This value is `dp[i-1][j-w[i]]`.
+- Take `dp[i][j]` to be the maximum of the two above cases.
 
 If the capacity `j < w[i]`, then it is not possible to put this ith item in our knapsack under the current capacity restriction, even if we remove all the items currently in our knapsack. So, we just consider the first i-1 items under capacity j: `dp[i-1][j]1`.
 
