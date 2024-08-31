@@ -67,7 +67,7 @@ Now, for each item, we consider whether or not to add it given each capacity. Ou
 
 If the capacity `j >= w[i]`, then it is possible to put this ith item in our knapsack. However, we may or may not have to remove some items in our knapsack. 
 - Let's first consider the case that we do not take it. Then, the max value we can have for this scenario is `dp[i-1][j]` since we basically just using the first i-1 items.
-- The second case is that we do take this item. However, we might have to remove some items. If our current capacity is j, then the items that remain in our knapsack must have total weight at most `j-w[i]`. So, we want the max value we can get considering the first `i-1` items that have weight at most `j-w[i]`. This value is `dp[i-1][j-w[i]]`.
+- The second case is that we do take this item. However, we might have to remove some items. If our current capacity is j, then the items that remain in our knapsack must have total weight at most `j-w[i]`. So, we want the max value we can get considering the first `i-1` items that have weight at most `j-w[i]`, plus the value and weight of this item. This value is `dp[i-1][j-w[i]] + v[i]`.
 - Take `dp[i][j]` to be the maximum of the two above cases.
 
 If the capacity `j < w[i]`, then it is not possible to put this ith item in our knapsack under the current capacity restriction, even if we remove all the items currently in our knapsack. So, we just consider the first i-1 items under capacity j: `dp[i-1][j]1`.
@@ -91,7 +91,7 @@ for i in [0, n]
 
             // make space for this item and take it. the items we keep (aside from this one) must have at most weight j-w[i]
             // so take the best knapsack with that weight considering the first i-1 items
-            b = dp[i-1][j-w[i]]
+            b = dp[i-1][j-w[i]] + v[i]
 
             dp[i][j] = max(a, b)
         else // this item does not fit into the knapsack under weight restriction j, even if we remove all other items. so we cannot take it
@@ -123,7 +123,7 @@ int knapsack()
             else if (j >= w[i]) // consider item
             {
                 int a = dp[i-1][j]; // don't take it, take best knapsack with previous items at this weight
-                int b = dp[i-1][j-w[i]]; // make room and take it, along with knapsack with previous items that can fit with this item
+                int b = dp[i-1][j-w[i]] + v[i]; // make room and take it, along with knapsack with previous items that can fit with this item
                 dp[i][j] = max(a, b); // take the best out of these two scenarios
             }
             else // can't take this item at this weight restriction, take best knapsack at this weight
