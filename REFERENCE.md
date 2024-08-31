@@ -51,6 +51,90 @@ We want to get the sum of the green cells, but the green cell with x contains th
 
 ### 3D Prefix Sum
 
+## Dynamic Programming
+
+Solve large, complex problems by breaking them down into smaller, simpler problems before solving these simpler problems (and combining them to get the solution to the original problem). This is a rather broad topic but will try to include some general thoughts as well as examples.
+
+### 0-1 Knapsack Problem
+
+There are n objects (numbered 1 to n) that each have some value v and weight w. You can carry a maximum total weight of c, and are trying to maximize the total value of items you carry.
+
+Define `dp[i][j]` as the best value we can get considering the first `i` objects, and limiting ourselves to a capacity `j`. We will calculate this for all `i, j` such that `1 <= i <= n` and `0 <= j <= c`. The final answer will be `dp[n][c]`.
+
+Clearly, if our max capacity is 0, or we are including 0 items, the max value we can have is 0. So we can initialize our dp with dp[i][0] = 0, and dp[0][j] = 0.
+
+Now, for each item, we consider whether or not to add it given each capacity. Our DP has the following logic:
+
+If the capacity j is greater than or equal to w[i], then it is possible to put this ith item in our knapsack. However, we may or may not have to remove some items in our knapsack. Let's first consider the case that we do not take it. Then, the max value we can have for this scenario is `dp[i-1][j]` since we basically just using the first i-1 items. The second case is that we do take this item. However, we might have to remove some items. If our current capacity is j, then the items that remain in our knapsack must have total weight at most `j-w[i]`. So, we want the max value we can get considering the first `i-1` items that have weight at most `j-w[i]`. This value is `dp[i-1][j-w[i]]`. 
+
+If the capacity j is less than w[i], then it is not possible to put this ith item in our knapsack under the current capacity restriction, even if we remove all the items currently in our knapsack. So, we just consider the first i-1 items under capacity j: `dp[i-1][j]1`.
+
+#### Pseudocode
+
+```
+item values v: [v1, v2, v3....vn]
+item weights w: [w1, w2, w3....wn]
+max_capacity: c
+
+dp[n+1][c+1]
+
+for i in [0, n]
+    for j in [0, c]
+        if i == 0 or j == 0
+            dp[i][j] = 0
+        else if j >= w[i] // this item can fit in our knapsack. consider it
+            // do not take this item, just take the best knapsack with weight <= j from before this item
+            a = dp[i-1][j]
+
+            // make space for this item and take it. the items we keep (aside from this one) must have at most weight j-w[i]
+            // so take the best knapsack with that weight considering the first i-1 items
+            b = dp[i-1][j-w[i]]
+
+            dp[i][j] = max(a, b)
+        else // this item does not fit into the knapsack under weight restriction j, even if we remove all other items. so we cannot take it
+            dp[i][j] = dp[i-1][j]
+
+return dp[n][c]
+```
+
+#### C++ Implementation
+
+```
+// populate with inputs
+vector<int> v (n+1);
+vector<int> w (n+1);
+int c;
+
+int knapsack()
+{
+    vector<vector<int>> dp (n+1, vector<int> (n+1));
+
+    for (int i = 0; i <= n; i++)
+    {
+        for (int j = 0; j <= c; j++)
+        {
+            if (i == 0 || j == 0) // no items to consider or can't carry any weight
+            {
+                dp[i][j] = 0;
+            }
+            else if (j >= w[i]) // consider item
+            {
+                int a = dp[i-1][j]; // don't take it, take best knapsack with previous items at this weight
+                int b = dp[i-1][j-w[i]]; // make room and take it, along with knapsack with previous items that can fit with this item
+                dp[i][j] = max(a, b); // take the best out of these two scenarios
+            }
+            else // can't take this item at this weight restriction, take best knapsack at this weight
+            {
+                dp[i][j] = dp[i-1][j];
+            }
+        }
+    }
+
+    // return best knapsack considering all n items and the knapsack's true capacity c
+    return dp[n][c];
+}
+```
+
 # Basic Algorithms
 
 ## Binary Search
