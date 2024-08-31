@@ -5,7 +5,7 @@ REFERENCE FOR COMPETITIVE PROGRAMMING:
 ## Prefix Sums
 Useful for many things, too many to list here. As a general idea, they are used as precomputation so we can check the total value of a segment in an array in constant time as opposed to time proportional to the length of the segment.
 
-To build it, create another array. Depending on the situation, it might useful to pad with an initial 0. Otherwise, just add the prefix sum from the previous index and the current element to get the current prefix sum. For example, `prefix_sum[i] = prefix_sum[i-1] + array[i]`
+To build it, create another array (it can be done by overwriting the original array, but that is often undesirable and virtually all problems afford plenty of space to make another array). Depending on the situation, it might useful to pad with an initial 0. Otherwise, just add the prefix sum from the previous index and the current element to get the current prefix sum. For example, `prefix_sum[i] = prefix_sum[i-1] + array[i]`. 
 
 ### 2D Prefix Sum 
 For visualization purposes, assume that rows further down have higher row indices, columns further right have higher column indices.
