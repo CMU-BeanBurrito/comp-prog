@@ -71,6 +71,8 @@ So (3, 3) is distance 3 to (1, 2) and distance 4 to (1, 1).
 
 This pattern can be extended until (n, n), which has distances 2n-3 and 2n-2, respectively. Therefore we have covered all possible distances. So this must be optimal.
 
-# F:
+# F: Equal XOR Segments
 
-# G:
+# G1: Division + LCP (Easy)
+
+# G2: Division + LCP (Hard)
