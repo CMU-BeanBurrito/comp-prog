@@ -3,7 +3,7 @@ Notes on solutions/approaches to problems
 # A: A+B Again?
 Divide by 10 to get the tenths place, divide by modulo 10 to get ones place, add them.
 
-# B: Card GAme
+# B: Card Game
 There are 3 distinct cases (which will be broken up further) in which we win, for each, we need to consider the two possible card matchups:
 Each of these win conditions yields two wins, since it doesn't matter which round happens first
 - Win both rounds

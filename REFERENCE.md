@@ -157,7 +157,7 @@ gcd(x+1, x) must also divide x+1-x = 1. Trivially, only 1 can divide 1. So gcd(x
 
 Therefore x and x+1 are coprime.
 
-## Extended Euclidean Algorithm
+## Extended Euclidean Algorithm and Modular Inverse
 - Inputs: integers a, b
 - Outputs: integers x, y s.t. ax + by = gcd(a, b)
 
