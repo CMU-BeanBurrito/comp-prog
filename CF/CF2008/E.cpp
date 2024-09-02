@@ -104,28 +104,6 @@ void solve() {
         }
     }
 
-    /*
-    for (int i = 0; i < n; i++)
-    {
-        printf("%d ", preodd[1][i]);
-    } printf("\n");
-
-    for (int i = 0; i < n; i++)
-    {
-        printf("%d ", preeven[1][i]);
-    } printf("\n");
-
-    for (int i = 0; i < n; i++)
-    {
-        printf("%d ", postodd[1][i]);
-    } printf("\n");
-
-    for (int i = 0; i < n; i++)
-    {
-        printf("%d ", posteven[1][i]);
-    } printf("\n");
-    */
-
     int mx = INT_MIN;
 
     for (int i = 0; i < n; i++)
