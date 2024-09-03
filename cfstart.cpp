@@ -14,6 +14,23 @@ using ll = long long;
 
 #define MOD 1'000'000'007
 
+int gcdExt(int a, int b, int* x, int* y);
+int inv (int a, int m);
+
+void solve() {
+    
+}
+
+int main() {
+    int t; cin >> t;
+    
+    while(t--) {
+        solve();
+    }
+    
+    return 0;
+}
+
 int gcdExt(int a, int b, int* x, int* y)
 {
     if (a == 0)
@@ -40,20 +57,5 @@ int inv (int a, int m) // modular inverse of a mod m
 
     return (x % m + m) % m;
 }
-
-void solve() {
-    
-}
-
-int main() {
-    int t; cin >> t;
-    
-    while(t--) {
-        solve();
-    }
-    
-    return 0;
-}
-
 
 
