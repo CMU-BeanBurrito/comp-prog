@@ -2,6 +2,7 @@
     Author: BeanBurrito
 */
 
+#include <iostream>
 #include <cstdio>
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
@@ -9,9 +10,21 @@
 
 using namespace __gnu_pbds;
 using namespace std;
-using ll = long long; 
+using ll = long long;
 
 #define MOD 1'000'000'007
+
+int gcdExt(int a, int b, int* x, int* y);
+int inv (int a, int m);
+
+void solve() {
+    
+}
+
+int main() {
+    solve();
+    return 0;
+}
 
 int gcdExt(int a, int b, int* x, int* y)
 {
@@ -39,15 +52,5 @@ int inv (int a, int m) // modular inverse of a mod m
 
     return (x % m + m) % m;
 }
-
-void solve() {
-    
-}
-
-int main() {
-    solve();
-    return 0;
-}
-
 
 
