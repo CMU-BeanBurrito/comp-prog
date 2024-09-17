@@ -229,7 +229,7 @@ void sieve()
 ```
 
 ## Checking larger numbers
-However, it will also allow us to check the primality of numbers up to N^2 in O(N) time (we can check all primes in our sieve, if the number does not have any of them as factors, it is also prime). If we need to check multiple numbers that are betwen N and N^2, we can construct another vector with just the primes from our sieve. This would make each query to numbers between N and N^2 take O(N / logN) time. Of course, make sure to account for integer overflow if N^2 exceeds INT_MAX (argument is long long in this case as 4E10 > INT_MAX).
+However, it will also allow us to check the primality of numbers up to N^2 in O(N) time (we can check all primes in our sieve, if the number does not have any of them as factors, it is also prime). If we need to check multiple numbers that are betwen N and N^2, we can construct another vector with just the primes from our sieve (this takes O(N) time). This would make each query to numbers between N and N^2 take O(log N) time (after the vector of primes is constructed), as there are O(log N) primes in the first N numbers. Of course, make sure to account for integer overflow if N^2 exceeds INT_MAX (argument is long long in this case as 4E10 > INT_MAX).
 
 ```
 vector<bool> erat (200001, true);
