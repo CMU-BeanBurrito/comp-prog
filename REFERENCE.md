@@ -55,6 +55,36 @@ We want to get the sum of the green cells, but the green cell with x contains th
 
 Solve large, complex problems by breaking them down into smaller, simpler problems before solving these simpler problems (and combining them to get the solution to the original problem). This is a rather broad topic but will try to include some general thoughts as well as examples.
 
+### Maximum Sum Subarray Problem
+
+Given an array of integers (can be positive or negative), find the maximum (contiguous) subarray sum. Clearly, this can be done naively in O(N^2) by brute forcing all O(N^2) subarrays.
+
+#### Kadane's Algorithm
+
+Keep track of one subarray at a time as we traverse from left to right. For each new element, we decided whether we want to add this new element to the current subarray and continue with this subarray, or start a new subarray that is just this new element. After handling each element, we check if our subarray has the maximum sum, in case it is the true maximum sum subarray and we end up decreasing it by adding negative elements or discarding the subarray. At any given point, our running subarray sum is the maximum sum subarray that ends at the current elemtn. The logic is simple:
+
+If the subarray's sum is:
+- negative, then discarding this subarray and starting a new one with just new element will be better
+- positive, then extending this subarray with the new element will be better
+- 0, doesn't matter, fold into either of the above cases
+
+#### Pseudocode
+```
+best = 0
+sum = 0
+a[n]
+
+for i in [0, n)
+    if (sum > 0)
+        sum += a[i]
+    else
+        sum = a[i]
+    
+    best = max(best, sum)
+
+return best
+```
+
 ### 0-1 Knapsack Problem
 
 There are n objects (numbered 1 to n) that each have some value v and weight w. You can carry a maximum total weight of c, and are trying to maximize the total value of items you carry.
