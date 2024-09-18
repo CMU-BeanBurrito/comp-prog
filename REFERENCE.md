@@ -85,6 +85,34 @@ for i in [0, n)
 return best
 ```
 
+#### C++ Implementation
+```
+// populate
+vector<int> a (n);
+
+int kadane()
+{
+    int sum = 0;
+    int best = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (sum > 0)
+        {
+            sum += a[i];
+        }
+        else
+        {
+            sum = a[i];
+        }
+
+        best = max(best, sum);
+    }
+
+    return best;
+}
+```
+
 ### 0-1 Knapsack Problem
 
 There are n objects (numbered 1 to n) that each have some value v and weight w. You can carry a maximum total weight of c, and are trying to maximize the total value of items you carry.
