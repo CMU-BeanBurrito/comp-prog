@@ -16,6 +16,7 @@ using ll = long long;
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
+ll kadane(vector<int>& a, int n);
 
 void solve() {
     
@@ -56,6 +57,27 @@ int inv (int a, int m) // modular inverse of a mod m
     int g = gcdExt(a, m, &x, &y);
 
     return (x % m + m) % m;
+}
+ll kadane(vector<int>& a, int n)
+{
+    ll sum = 0;
+    ll best = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (sum > 0)
+        {
+            sum += a[i];
+        }
+        else
+        {
+            sum = a[i];
+        }
+
+        best = max(best, sum);
+    }
+
+    return best;
 }
 
 
