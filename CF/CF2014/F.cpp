@@ -21,51 +21,43 @@ ll kadane(vector<int>& a, int n);
 void solve() {
     int n, q; cin >>n >> q;
 
-    vector<int> a (n);
+    vector<int> a (2*n);
 
-    for (int i = 1; i <= n; i++) cin >> a[i];
+    for (int i = 0; i < n; i++) cin >> a[i];
+    for (int i = n; i < 2*n; i++) a[i] = a[i-n];
 
     vector<ll> pref (2*n);
-
-    pref[0] = 0LL;
+    pref[0] = a[0];
     
-    for (int i = 1; i <= 2*n; i++)
-    {
-        pref[i] = pref[i-1] + a[(i-1)%n + 1];
-        printf("%lld ", pref[i]);
-    } printf("\n");
+    for (int i = 1; i < 2*n; i++) pref[i] = pref[i-1] + a[i];
 
     while(q--)
     {
         ll left, right; cin >> left >> right;
 
-        //left--; // so we can do right-left and exclude left
+        left--; right--;
 
-        ll left_rot = (left-1)/n + 1;
-        ll right_rot = (right-1)/n + 1;
+        ll left_rot = left/n;
+        ll right_rot = right/n;
 
-        ll left_idx = ((left-1)%n + 1);
-        ll right_idx = ((right-1)%n + 1);
-
-        printf("%d %d %d %d\n", left_rot, left_idx, right_rot, right_idx);
+        ll left_idx = left%n;
+        ll right_idx = right%n;
 
         ll ans = 0LL;
 
         // no full rotations between left and right
         if (right_rot == left_rot)
         {
-            ans =  pref[right_rot+right_idx-1] - pref[left_rot+left_idx-1] + a[(left_rot+left_idx-1)%n + 1];
+            ans = pref[right_rot+right_idx] - pref[left_rot+left_idx] + a[left_rot+left_idx];
         }
         else
         {
             // add any full rotations
             // add prefix of right_rot
             // add suffix of left_rot
-            ans += (right_rot-left_rot-1)*pref[n];
-            printf("%lld\n", ans);
-            ans += pref[right_rot+right_idx]-pref[right_rot];
-            printf("%lld\n", ans);
-            ans += pref[left_rot-1+n]-pref[left_rot-1];
+            ans += (right_rot-left_rot-1)*pref[n-1];
+            ans += pref[right_rot+right_idx]-pref[right_rot]+a[right_rot];
+            ans += pref[left_rot+n-1]-pref[left_rot+left_idx]+a[left_rot+left_idx];
         }
 
         printf("%lld\n", ans);
