@@ -17,6 +17,8 @@ using ll = long long;
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
 ll kadane(vector<int>& a, int n);
+ll gcd(ll a, ll b);
+ll lcm(ll a, ll b);
 
 void solve() {
     
@@ -75,4 +77,13 @@ ll kadane(vector<int>& a, int n)
     return best;
 }
 
-
+ll gcd(ll a, ll b)
+{
+    if (b == 0) return a;
+    return gcd (b, a%b);
+}
+ 
+ll lcm(ll a, ll b)
+{
+    return (a / gcd(a, b)) * b;
+}

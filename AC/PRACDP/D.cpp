@@ -17,20 +17,44 @@ using ll = long long;
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
 ll kadane(vector<int>& a, int n);
-ll gcd(ll a, ll b);
-ll lcm(ll a, ll b);
 
 void solve() {
-    
+    int n, wt; cin >> n >> wt;
+
+    vector<int> w (n+1);
+    vector<int> v (n+1);
+
+    for (int i = 1; i <= n; i++) cin >> w[i] >> v[i];
+
+    vector<vector<ll>> dp (n+1, vector<ll> (wt+1));
+
+    for (int i = 0; i <= n; i++)
+    {
+        for (int c = 0; c <= wt; c++)
+        {
+            if (c == 0 || i == 0)
+            {
+                dp[i][c] = 0;
+            }
+            else if (c >= w[i])
+            {
+                ll notake = dp[i-1][c];
+                ll take = dp[i-1][c-w[i]] + v[i];
+                dp[i][c] = max(take, notake);
+            }
+            else
+            {
+                dp[i][c] = dp[i-1][c];
+            }
+
+        }
+    }
+
+    printf("%lld\n", dp[n][wt]);
 }
 
 int main() {
-    int t; cin >> t;
-    
-    while(t--) {
-        solve();
-    }
-    
+    solve();
     return 0;
 }
 
@@ -82,13 +106,4 @@ ll kadane(vector<int>& a, int n)
     return best;
 }
 
-ll gcd(ll a, ll b)
-{
-    if (b == 0) return a;
-    return gcd (b, a%b);
-}
- 
-ll lcm(ll a, ll b)
-{
-    return (a / gcd(a, b)) * b;
-}
+
