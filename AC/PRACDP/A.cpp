@@ -17,20 +17,29 @@ using ll = long long;
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
 ll kadane(vector<int>& a, int n);
-ll gcd(ll a, ll b);
-ll lcm(ll a, ll b);
 
 void solve() {
-    
+    int n; cin >> n;
+    vector<int> h (n+1);
+    vector<int> dp (n+1);
+
+    for (int i = 1; i <= n; i++) cin >> h[i];
+
+    dp[1] = 0;
+    dp[2] = abs(h[2]-h[1]);
+
+    for (int i = 3; i <= n; i++)
+    {
+        int jump1 = dp[i-1] + abs(h[i] - h[i-1]);
+        int jump2 = dp[i-2] + abs(h[i] - h[i-2]);
+        dp[i] = min(jump1, jump2);
+    }
+
+    printf("%d\n", dp[n]);
 }
 
 int main() {
-    int t; cin >> t;
-    
-    while(t--) {
-        solve();
-    }
-    
+    solve();
     return 0;
 }
 
@@ -82,13 +91,4 @@ ll kadane(vector<int>& a, int n)
     return best;
 }
 
-ll gcd(ll a, ll b)
-{
-    if (b == 0) return a;
-    return gcd (b, a%b);
-}
- 
-ll lcm(ll a, ll b)
-{
-    return (a / gcd(a, b)) * b;
-}
+
