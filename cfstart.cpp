@@ -13,6 +13,7 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
+#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
