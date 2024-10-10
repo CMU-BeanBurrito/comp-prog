@@ -13,7 +13,6 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
-#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
@@ -21,17 +20,39 @@ ll kadane(vector<int>& a, int n);
 ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 
-void solve() {
+int n, k;
+int r[8];
+int a[8];
+
+void solve(int lv) {
+    if (lv == n) // we have a fully constructed array
+    {
+        int sum = 0; // sum
+        for (int i = 0; i < n; i++) sum += a[i];
+        if (sum % k == 0) // is it valid?
+        {
+            for (int i = 0; i < n; i++) // print it
+            {
+                printf("%d ", a[i]);
+            } printf("\n");
+        }
+    }
+    else
+    {
+        // iterate through options for this index
+        for (int i = 1; i <= r[lv]; i++)
+        {
+            a[lv] = i;
+            solve(lv+1); // move to next index
+        }
+    }
     
 }
 
 int main() {
-    int t; cin >> t;
-    
-    while(t--) {
-        solve();
-    }
-    
+    cin >> n >> k;
+    for (int i = 0; i < n; i++) cin >> r[i];
+    solve(0);
     return 0;
 }
 

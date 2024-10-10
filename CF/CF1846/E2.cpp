@@ -13,7 +13,6 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
-#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
@@ -21,8 +20,41 @@ ll kadane(vector<int>& a, int n);
 ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 
+/**
+ * 1 + k + k^2 + k^3.....k^p = n
+ * k + k^2 + k^3........k^(p+1) = n*k
+ * 
+ * subtract n from both sides
+ * 
+ * k^(p+1) - 1 = n*(k-1)
+ */
+
 void solve() {
-    
+    ll n; cin >> n;
+    for (int p = 2; p < 63; p++)
+    {
+        double k = floor(pow(n, 1.0/p));
+
+        int kint = (int)k;
+
+        if (k < 2)
+        {
+            printf("NO\n");
+            return;
+        }
+
+        ll powk = 1;
+        for (int i = 1; i <= p+1; i++)
+        {
+            powk *= kint;
+        }
+
+        if (powk-1 == 1LL*n*(kint-1))
+        {
+            printf("YES\n");
+            return;
+        }
+    }
 }
 
 int main() {

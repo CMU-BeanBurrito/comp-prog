@@ -13,7 +13,6 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
-#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
@@ -22,7 +21,21 @@ ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 
 void solve() {
+    int n;
+    cin >> n;
     
+    int ans = 0;
+    
+    for (int i = 0; i < n; i++) {
+		int a, b; cin >> a >> b;
+        int h = a - b;
+        
+        if (h > 0) {
+            ans++;
+        }
+    }
+    
+    cout << ans << endl;
 }
 
 int main() {

@@ -13,7 +13,6 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
-#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
@@ -22,16 +21,32 @@ ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 
 void solve() {
-    
+    string s; cin >> s;
+
+    int n = s.length();
+
+    int i = n-1;
+
+    while(i > 0)
+    {
+        if (s[i] != '0' && s[i] != '.') // nonzero digit, done
+        {
+            break;
+        }
+        else if (s[i] == '.') // decimal point, remove and done
+        {
+            i--;
+            break;
+        }
+
+        i--;
+    }
+
+    cout << s.substr(0, i+1) << endl;
 }
 
 int main() {
-    int t; cin >> t;
-    
-    while(t--) {
-        solve();
-    }
-    
+    solve();
     return 0;
 }
 

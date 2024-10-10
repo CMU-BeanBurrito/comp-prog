@@ -13,16 +13,49 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
-#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
 ll kadane(vector<int>& a, int n);
-ll gcd(ll a, ll b);
-ll lcm(ll a, ll b);
 
 void solve() {
-    
+    ll b, c, d; cin >> b >> c >> d;
+
+    int bit = 0;
+
+    ll ans = 0;
+
+    while(bit <= 59)
+    {
+        ll val = 1LL << bit;
+
+        bool bbit = ((b&val)==val);
+        bool cbit = ((c&val)==val);
+        bool dbit = ((d&val)==val);
+
+        if (bbit && cbit && !dbit)
+        {
+            ans |= val;
+        }
+        else if (!bbit && !cbit && dbit)
+        {
+            ans |= val;
+        }
+        else if (bbit && !cbit && !dbit)
+        {
+            printf("-1\n");
+            return;
+        }
+        else if (!bbit && cbit && dbit)
+        {
+            printf("-1\n");
+            return;
+        }
+
+        bit++;
+    }
+
+    printf("%lld\n", ans);
 }
 
 int main() {
@@ -83,13 +116,4 @@ ll kadane(vector<int>& a, int n)
     return best;
 }
 
-ll gcd(ll a, ll b)
-{
-    if (b == 0) return a;
-    return gcd (b, a%b);
-}
- 
-ll lcm(ll a, ll b)
-{
-    return (a / gcd(a, b)) * b;
-}
+

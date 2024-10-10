@@ -13,7 +13,6 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
-#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
@@ -22,7 +21,39 @@ ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 
 void solve() {
-    
+    ll n, d, h; cin >> n >> d >> h;
+
+    vector<ll> y (n);
+    vector<ll> u (n, h);
+
+    for (int i = 0; i < n; i++) cin >> y[i];
+
+    for (int i = 0; i < n-1; i++)
+    {
+        if (y[i+1] - y[i] < h) u[i] = y[i+1]-y[i];
+    }
+
+    double ans = 0.0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (u[i] == h)
+        {
+            ans += d*h/2.0;
+            continue;
+        }
+
+        double full = d*h/2.0;
+
+        double covh = h-u[i]; // height of covered area
+        double covd = d*(h-u[i])/((double)h); // base of covered area
+
+        full -= (covh*covd/2.0);
+
+        ans += full;
+    }
+
+    printf("%.6f\n", ans);
 }
 
 int main() {

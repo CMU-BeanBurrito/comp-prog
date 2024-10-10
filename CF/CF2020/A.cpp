@@ -13,16 +13,51 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
-#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
 ll kadane(vector<int>& a, int n);
-ll gcd(ll a, ll b);
-ll lcm(ll a, ll b);
 
 void solve() {
+    vector<int> powersk;
+    ll n, k; cin >> n >> k;
+
+    ll val = 1;
+
+    if (k == 1 || k > n)
+    {
+        printf("%d\n", n);
+        return;
+    }
     
+    while(val <= 1e9 && val <= n)
+    {
+        powersk.push_back(val);
+        val *= k;
+    }
+
+    int ops = 0;
+    int idx = powersk.size()-1;
+
+    while(n > 0)
+    {
+        if (idx == 0)
+        {
+            ops += n;
+            break;
+        }
+        if (n >= powersk[idx])
+        {
+            n -= powersk[idx];
+            ops++;
+        }
+        else
+        {
+            idx--;
+        }
+    }
+
+    printf("%d\n", ops);
 }
 
 int main() {
@@ -83,13 +118,4 @@ ll kadane(vector<int>& a, int n)
     return best;
 }
 
-ll gcd(ll a, ll b)
-{
-    if (b == 0) return a;
-    return gcd (b, a%b);
-}
- 
-ll lcm(ll a, ll b)
-{
-    return (a / gcd(a, b)) * b;
-}
+

@@ -13,7 +13,6 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
-#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
@@ -22,7 +21,49 @@ ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 
 void solve() {
+    int n, m, h;
+    cin >> n >> m >> h;
+	
+	vector<int> v (m);
+	
+	int rscore = 0; //rudolf score
+	ll rpen = 0; //rudolf penalty
     
+    int ans = 1;
+    
+    for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			cin >> v[j];
+		}
+		
+		sort(v.begin(), v.end());
+		
+        int score = 0;
+        ll pen = 0;
+        int curtime = 0;
+        for (int j = 0; j < m; j++) {
+            if (curtime + v[j] <= h) {
+                score++;
+                curtime += v[j];
+                pen += curtime;
+            } else {
+                break;
+            }
+        }
+		
+        if (i > 0) { // another participant
+            if (score > rscore) {
+                ans++;
+            } else if (score == rscore && pen < rpen) {
+                ans++;
+            }
+        } else { // rudolf
+			rscore = score;
+			rpen = pen;
+		}
+    }
+    
+    cout << ans << endl;
 }
 
 int main() {
