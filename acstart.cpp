@@ -21,7 +21,7 @@ ll kadane(vector<int>& a, int n); // maximum subarray sum
 ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 ll merge(vector<int>& v, int l, int mid, int r); // l and r are inclusive (e.g. 0, n-1)
-ll mergesort(vector<int>& v, int l, int r); // l and r are inclusive (e.g. 0, n-1)
+ll mergesort(vector<int>& v, int l, int r); // l and r are inclusive (e.g. 0, n-1), returns inversion count
 
 void solve() {
     
