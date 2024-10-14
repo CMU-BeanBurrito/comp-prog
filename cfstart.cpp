@@ -16,10 +16,12 @@ using ll = long long;
 #define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
-int inv (int a, int m);
-ll kadane(vector<int>& a, int n);
+int inv (int a, int m); // modular inverse of a mod m
+ll kadane(vector<int>& a, int n); // maximum subarray sum
 ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
+ll merge(vector<int>& v, int l, int mid, int r); // l and r are inclusive (e.g. 0, n-1)
+ll mergesort(vector<int>& v, int l, int r); // l and r are inclusive (e.g. 0, n-1)
 
 void solve() {
     
@@ -54,13 +56,15 @@ int gcdExt(int a, int b, int* x, int* y)
         return gcd;
     }
 }
-int inv (int a, int m) // modular inverse of a mod m
+
+int inv (int a, int m)
 {
     int x, y;
     int g = gcdExt(a, m, &x, &y);
 
     return (x % m + m) % m;
 }
+
 ll kadane(vector<int>& a, int n)
 {
     ll sum = 0;
@@ -92,4 +96,56 @@ ll gcd(ll a, ll b)
 ll lcm(ll a, ll b)
 {
     return (a / gcd(a, b)) * b;
+}
+
+ll merge(vector<int>& v, int l, int mid, int r) {
+    int lidx = l;
+    int ridx = mid; // mid+1 from mergesort, first elem of right side
+    int residx = 0;
+    vector<int> res (r-l+1);
+    
+    ll ans = 0;
+    
+    while(lidx <= mid-1 && ridx <= r) {
+        if (v[lidx] <= v[ridx]) {
+            res[residx] = v[lidx];
+            lidx++; residx++;
+        } else { // inversion
+            res[residx] = v[ridx];
+            ridx++; residx++;
+            
+            ans += (mid-lidx); // elements lidx to mid-1 are all greater than v[ridx]
+        }
+    }
+    
+    while(lidx <= mid-1) {
+        res[residx] = v[lidx];
+        lidx++; residx++;
+    }
+    
+    while(ridx <= r) {
+        res[residx] = v[ridx];
+        ridx++; residx++;
+    }
+    
+    for (int i = l; i <= r; i++) {
+        v[i] = res[i-l];
+    }
+    
+    return ans;
+}
+ 
+ll mergesort(vector<int>& v, int l, int r) {
+    ll ans = 0;
+    
+    if (l < r) {
+        int mid = l + (r-l)/2; //mid is part of the left subarray
+        
+        ans += mergesort(v, l, mid);
+        ans += mergesort(v, mid+1, r);
+        
+        ans += merge(v, l, mid+1, r);
+    }
+    
+    return ans;
 }
