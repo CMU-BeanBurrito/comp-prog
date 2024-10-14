@@ -22,6 +22,9 @@ ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 ll merge(vector<int>& v, int l, int mid, int r); // l and r are inclusive (e.g. 0, n-1)
 ll mergesort(vector<int>& v, int l, int r); // l and r are inclusive (e.g. 0, n-1), returns inversion count
+void printi(vector<int>& v); // print vector of ints
+void printll(vector<ll>& v); // print vector of long long ints
+void printc(vector<char>& v); // print vector of chars
 
 void solve() {
     
@@ -148,4 +151,28 @@ ll mergesort(vector<int>& v, int l, int r) {
     }
     
     return ans;
+}
+
+void printi(vector<int>& v)
+{
+    for (int x : v)
+    {
+        printf("%d ", x);
+    } printf("\n");
+}
+
+void printll(vector<ll>& v)
+{
+    for (ll x : v)
+    {
+        printf("%lld ", x);
+    } printf("\n");
+}
+
+void printc(vector<char>& v)
+{
+    for (char x : v)
+    {
+        printf("%c ", x);
+    } printf("\n");
 }
