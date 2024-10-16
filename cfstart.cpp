@@ -63,7 +63,7 @@ int gcdExt(int a, int b, int* x, int* y)
 int inv (int a, int m)
 {
     int x, y;
-    int g = gcdExt(a, m, &x, &y);
+    gcdExt(a, m, &x, &y);
 
     return (x % m + m) % m;
 }
