@@ -26,6 +26,8 @@ void printi(vector<int>& v); // print vector of ints
 void printll(vector<ll>& v); // print vector of long long ints
 void printc(vector<char>& v); // print vector of chars
 
+// PUT GLOBALS HERE
+
 void solve() {
     
 }
