@@ -25,41 +25,70 @@ ll mergesort(vector<int>& v, int l, int r); // l and r are inclusive (e.g. 0, n-
 void printi(vector<int>& v); // print vector of ints
 void printll(vector<ll>& v); // print vector of long long ints
 void printc(vector<char>& v); // print vector of chars
+vector<vector<int>> con(200001);
 
 void solve() {
-    int n, a, b; cin >> n >> a >> b;
-    vector<int> c (n);
+    int n, k; cin >> n >> k;
+    map<int, int> mp;
+    vector<int> a (n);
+    int mn = INT_MAX;
 
-    for (int i = 0; i < n; i++) cin >> c[i];
-
-    int d = gcd(a, b);
-
-    if (d == 1)
+    for (int i = 0; i < n; i++)
     {
-        printf("0\n");
-        return;
+        cin >> a[i];
+        mp[a[i]]++;
+        mn = min(mn, a[i]);
     }
 
-    for (int i = 0; i < n; i++) c[i] %= d;
+    int coni = 0;
+    con[0].push_back(mn);
 
-    sort(c.begin(), c.end());
+    for (auto p : mp)
+    {
+        if (p.first == mn) continue;
 
-    int gap = 0;
+        if (p.first == con[coni][con[coni].size()-1] + 1)
+        {
+            con[coni].push_back(p.first);
+        }
+        else
+        {
+            coni++;
+            con[coni].push_back(p.first);
+        }
+    }
 
-    for (int i = 1; i < n; i++) gap = max(gap, c[i]-c[i-1]);
+    ll best = 0LL;
 
-    gap = max(gap, d+c[0]-c[n-1]);
+    for (int i = 0; i <= coni; i++)
+    {
+        if (con[i].size() <= k)
+        {
+            ll s = 0LL;
+            for (int x : con[i]) s += mp[x];
+            best = max(best, s);
+        }
+        else
+        {
+            vector<ll> pref (con[i].size()+1);
+            pref[0] = 0LL;
+            for (int j = 1; j <= con[i].size(); j++) pref[j] = pref[j-1] + mp[con[i][j-1]];
+            for (int j = k; j <= con[i].size(); j++)
+            {
+                best = max(best, pref[j]-pref[j-k]);
+            }
+        }
+    }
 
-    printf("%d\n", d-gap);
+    printf("%lld\n", best);
+
+    for (int i = 0; i <= coni; i++) con[i].clear();
 }
 
 int main() {
     int t; cin >> t;
-    
-    while(t--) {
-        solve();
-    }
-    
+
+    while(t--) solve();
     return 0;
 }
 
@@ -86,7 +115,7 @@ int gcdExt(int a, int b, int* x, int* y)
 int inv (int a, int m)
 {
     int x, y;
-    gcdExt(a, m, &x, &y);
+    int g = gcdExt(a, m, &x, &y);
 
     return (x % m + m) % m;
 }

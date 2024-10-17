@@ -27,30 +27,16 @@ void printll(vector<ll>& v); // print vector of long long ints
 void printc(vector<char>& v); // print vector of chars
 
 void solve() {
-    int n, a, b; cin >> n >> a >> b;
-    vector<int> c (n);
+    string s, t; cin >> s >> t;
 
-    for (int i = 0; i < n; i++) cin >> c[i];
+    int n = s.length();
+    int m = t.length();
 
-    int d = gcd(a, b);
+    int same = 0;
 
-    if (d == 1)
-    {
-        printf("0\n");
-        return;
-    }
+    while(same < n && same < m && (s[same] == t[same])) same++;
 
-    for (int i = 0; i < n; i++) c[i] %= d;
-
-    sort(c.begin(), c.end());
-
-    int gap = 0;
-
-    for (int i = 1; i < n; i++) gap = max(gap, c[i]-c[i-1]);
-
-    gap = max(gap, d+c[0]-c[n-1]);
-
-    printf("%d\n", d-gap);
+    printf("%d\n", min(m+n, m+n-same+1)); // if same is 0, no need to do any copying
 }
 
 int main() {
@@ -86,7 +72,7 @@ int gcdExt(int a, int b, int* x, int* y)
 int inv (int a, int m)
 {
     int x, y;
-    gcdExt(a, m, &x, &y);
+    int g = gcdExt(a, m, &x, &y);
 
     return (x % m + m) % m;
 }

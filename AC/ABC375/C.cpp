@@ -13,6 +13,7 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
+#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
@@ -20,40 +21,64 @@ ll kadane(vector<int>& a, int n);
 ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 
+pair<int, int> from(int n, int r, int c, int rot)
+{
+    if (rot == 0) return make_pair(r, c);
+
+    if (rot == 1)
+    {
+        return make_pair(n-c+1, r);
+    }
+
+    if (rot == 2) return make_pair(n-r+1, n-c+1);
+
+    if (rot == 3)
+    {
+        return make_pair(c, n-r+1);
+    }
+
+    return make_pair(-1, -1);
+}
+
 void solve() {
-    int n, x; cin >> n >> x;
+    int n; cin >> n;
 
-    map<int, int> mp;
+    vector<vector<char>> a (n+1, vector<char> (n+1));
 
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i <= n; i++)
     {
-        int x; cin >> x;
-        mp[x]++;
-    }
-
-    for (int i = 0; i < n; i++)
-    {
-        if (mp[i] == 0)
+        string s; cin >> s;
+        for (int j = 1; j <= n; j++)
         {
-            printf("%d\n", i);
-            return;
-        }
-        else if (mp[i] > 1)
-        {
-            mp[i+x] += mp[i]-1;
+            a[i][j] = s[j-1];
         }
     }
 
-    printf("%d\n", n);
+    vector<vector<char>> b (n+1, vector<char> (n+1));
+
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            int row = min(i, n-i+1);
+            int col = min(j, n-j+1);
+            int ops = min(row, col);
+            pair<int, int> p = from(n, i, j, ops%4);
+            b[i][j] = a[p.first][p.second];
+        }
+    }
+
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            printf("%c", b[i][j]);
+        } printf("\n");
+    }
 }
 
 int main() {
-    int t; cin >> t;
-    
-    while(t--) {
-        solve();
-    }
-    
+    solve();
     return 0;
 }
 

@@ -13,6 +13,7 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
+#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
@@ -21,30 +22,57 @@ ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 
 void solve() {
-    int n, x; cin >> n >> x;
+    int n, k; cin >> n >> k;
 
-    map<int, int> mp;
+    vector<int> a (2*n);
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < 2*n; i++) cin >> a[i];
+
+    map<int, int> fh; //first half
+
+    // track frequency for first half. we can compute second half frequency from first half.
+    for (int i = 0; i < n; i++) fh[a[i]]++;
+
+    vector<int> l;
+    vector<int> r;
+
+    for (int i = 1; i <= n; i++)
     {
-        int x; cin >> x;
-        mp[x]++;
+        if (fh[i] == 2 && l.size() <= 2*k - 2)
+        {
+            l.push_back(i);
+            l.push_back(i);
+        }
+
+        if (fh[i] == 0 && r.size() <= 2*k - 2)
+        {
+            r.push_back(i);
+            r.push_back(i);
+        }
+
+        if (l.size() == 2*k && r.size() == 2*k) break;
     }
 
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i <= n; i++)
     {
-        if (mp[i] == 0)
+        if (fh[i] == 1 && l.size() <= 2*k - 1 && r.size() <= 2*k - 1)
         {
-            printf("%d\n", i);
-            return;
+            l.push_back(i);
+            r.push_back(i);
         }
-        else if (mp[i] > 1)
-        {
-            mp[i+x] += mp[i]-1;
-        }
+
+        if (l.size() == 2*k && r.size() == 2*k) break;
     }
 
-    printf("%d\n", n);
+    for (int i = 0; i < 2*k; i++)
+    {
+        printf("%d ", l[i]);
+    } printf("\n");
+
+    for (int i = 0; i < 2*k; i++)
+    {
+        printf("%d ", r[i]);
+    } printf("\n");
 }
 
 int main() {

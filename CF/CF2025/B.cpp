@@ -25,41 +25,31 @@ ll mergesort(vector<int>& v, int l, int r); // l and r are inclusive (e.g. 0, n-
 void printi(vector<int>& v); // print vector of ints
 void printll(vector<ll>& v); // print vector of long long ints
 void printc(vector<char>& v); // print vector of chars
+vector<ll> pow2 (200001);
 
 void solve() {
-    int n, a, b; cin >> n >> a >> b;
-    vector<int> c (n);
+    int t; cin >> t;
+    vector<int> n (t);
+    vector<int> k (t);
 
-    for (int i = 0; i < n; i++) cin >> c[i];
+    for (int i = 0; i < t; i++) cin >> n[i];
+    for (int i = 0; i < t; i++) cin >> k[i];
 
-    int d = gcd(a, b);
-
-    if (d == 1)
-    {
-        printf("0\n");
-        return;
-    }
-
-    for (int i = 0; i < n; i++) c[i] %= d;
-
-    sort(c.begin(), c.end());
-
-    int gap = 0;
-
-    for (int i = 1; i < n; i++) gap = max(gap, c[i]-c[i-1]);
-
-    gap = max(gap, d+c[0]-c[n-1]);
-
-    printf("%d\n", d-gap);
+    // manually calculate the table for small n, k
+    // if n = 0, or k = n, C[n][k], trivially
+    // otherwise, C[n][k] = 2^k (mod 1E9 + 7)
+    for (int i = 0; i < t; i++) printf("%d\n", pow2[k[i]]);
 }
 
 int main() {
-    int t; cin >> t;
-    
-    while(t--) {
-        solve();
+    // pre compute powers of 2
+    pow2[0] = 1LL;
+    for (int i = 1; i < 200001; i++)
+    {
+        pow2[i] = pow2[i-1] << 1;
+        pow2[i] %= MOD;
     }
-    
+    solve();
     return 0;
 }
 
@@ -86,7 +76,7 @@ int gcdExt(int a, int b, int* x, int* y)
 int inv (int a, int m)
 {
     int x, y;
-    gcdExt(a, m, &x, &y);
+    int g = gcdExt(a, m, &x, &y);
 
     return (x % m + m) % m;
 }

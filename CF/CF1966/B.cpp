@@ -13,6 +13,7 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
+#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
@@ -21,30 +22,50 @@ ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 
 void solve() {
-    int n, x; cin >> n >> x;
+    int n, m; cin >> n >> m;
 
-    map<int, int> mp;
-
-    for (int i = 0; i < n; i++)
-    {
-        int x; cin >> x;
-        mp[x]++;
-    }
+    vector<vector<char>> board (n, vector<char> (m));
 
     for (int i = 0; i < n; i++)
     {
-        if (mp[i] == 0)
+        string s; cin >> s;
+        for (int j = 0; j < m; j++)
         {
-            printf("%d\n", i);
-            return;
-        }
-        else if (mp[i] > 1)
-        {
-            mp[i+x] += mp[i]-1;
+            board[i][j] = s[j];
         }
     }
 
-    printf("%d\n", n);
+    // need a cell in the first and last row, and a cell in the last row and column
+    vector<bool> have (8, false);
+    for (int i = 0; i < n; i++)
+    {
+        if (board[i][0] == 'W') have[0] = true;
+        if (board[i][m-1] == 'W') have[1] = true;
+        if (board[i][0] == 'B') have[4] = true;
+        if (board[i][m-1] == 'B') have[5] = true;
+    }
+
+    for (int j = 0; j < m; j++)
+    {
+        if (board[0][j] == 'W') have[2] = true;
+        if (board[n-1][j] == 'W') have[3] = true;
+        if (board[0][j] == 'B') have[6] = true;
+        if (board[n-1][j] == 'B') have[7] = true;
+    }
+
+    if (have[0] && have[1] && have[2] && have[3])
+    {
+        printf("YES\n");
+        return;
+    }
+
+    if (have[4] && have[5] && have[6] && have[7])
+    {
+        printf("YES\n");
+        return;
+    }
+
+    printf("NO\n");
 }
 
 int main() {

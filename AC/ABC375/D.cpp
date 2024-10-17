@@ -13,6 +13,7 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
+#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
@@ -21,39 +22,38 @@ ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 
 void solve() {
-    int n, x; cin >> n >> x;
+    string s; cin >> s;
 
-    map<int, int> mp;
+    vector<vector<int>> a (26, vector<int>());
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < s.length(); i++)
     {
-        int x; cin >> x;
-        mp[x]++;
+        a[s[i]-'A'].push_back(i);
     }
 
-    for (int i = 0; i < n; i++)
+    ll ans = 0LL;
+
+    for (int i = 0; i < 26; i++)
     {
-        if (mp[i] == 0)
+        int m = a[i].size();
+        if (m < 2) continue;
+
+        ll acc = 0LL;
+
+        for (int j = 1; j < m; j++)
         {
-            printf("%d\n", i);
-            return;
-        }
-        else if (mp[i] > 1)
-        {
-            mp[i+x] += mp[i]-1;
+            ans += 1LL*(j-1)*(j)/2;
+            ans += acc;
+            ans += 1LL* (a[i][j]-a[i][j-1]-1) * (j);
+            acc += 1LL* (a[i][j]-a[i][j-1]-1) * (j);
         }
     }
 
-    printf("%d\n", n);
+    printf("%lld\n", ans);
 }
 
 int main() {
-    int t; cin >> t;
-    
-    while(t--) {
-        solve();
-    }
-    
+    solve();
     return 0;
 }
 

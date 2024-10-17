@@ -26,40 +26,64 @@ void printi(vector<int>& v); // print vector of ints
 void printll(vector<ll>& v); // print vector of long long ints
 void printc(vector<char>& v); // print vector of chars
 
+// PUT GLOBALS HERE
+vector<vector<int>> tr (200001, vector<int>());
+
 void solve() {
-    int n, a, b; cin >> n >> a >> b;
-    vector<int> c (n);
+    int n; cin >> n;
 
-    for (int i = 0; i < n; i++) cin >> c[i];
-
-    int d = gcd(a, b);
-
-    if (d == 1)
+    for (int i = 0; i < n-1; i++)
     {
-        printf("0\n");
-        return;
+        int u, v; cin >> u >> v;
+        tr[u].push_back(v);
+        tr[v].push_back(u);
     }
 
-    for (int i = 0; i < n; i++) c[i] %= d;
+    string s; cin >> s;
 
-    sort(c.begin(), c.end());
+    int gleaf = 0; // leaves that are green (1)
+    int wleaf = 0; // leaves that are white (0)
+    int qleaf = 0; // leaves that are ?
+    int qint = 0; // internal nodes that are ?
 
-    int gap = 0;
+    for (int i = 2; i <= n; i++)
+    {
+        if (tr[i].size() == 1) // degree of 1 means leaf
+        {
+            if (s[i-1] == '1') gleaf++;
+            if (s[i-1] == '0') wleaf++;
+            if (s[i-1] == '?') qleaf++;
+        }
+        else
+        {
+            if (s[i-1] == '?') qint++;
+        }
+    }
 
-    for (int i = 1; i < n; i++) gap = max(gap, c[i]-c[i-1]);
+    if (s[0] != '?') // root fixed, color leaves
+    {
+        printf("%d\n", s[0] == '1' ? wleaf+(qleaf+1)/2 : gleaf+(qleaf+1)/2);
+    }
+    else if (gleaf == wleaf) // root unfixed
+    {
+        // color internal node, Iris is "first" 
+        if (qint % 2 == 1) printf("%d\n", gleaf + (qleaf+1)/2);
 
-    gap = max(gap, d+c[0]-c[n-1]);
+        // color root
+        if (qint % 2 == 0) printf("%d\n", gleaf + qleaf/2);
+    }
+    else // root unfixed
+    {
+        // color root 
+        printf("%d\n", max(gleaf, wleaf) + qleaf/2);
+    }
 
-    printf("%d\n", d-gap);
+    for (int i = 1; i <= n; i++) tr[i].clear();
 }
 
 int main() {
     int t; cin >> t;
-    
-    while(t--) {
-        solve();
-    }
-    
+    while(t--) solve();
     return 0;
 }
 
@@ -86,7 +110,7 @@ int gcdExt(int a, int b, int* x, int* y)
 int inv (int a, int m)
 {
     int x, y;
-    gcdExt(a, m, &x, &y);
+    int g = gcdExt(a, m, &x, &y);
 
     return (x % m + m) % m;
 }

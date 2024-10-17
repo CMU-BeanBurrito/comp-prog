@@ -13,6 +13,7 @@ using namespace std;
 using ll = long long;
 
 #define MOD 1'000'000'007
+#define divceil(n, m) (n+m-1)/m
 
 int gcdExt(int a, int b, int* x, int* y);
 int inv (int a, int m);
@@ -21,30 +22,48 @@ ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
 
 void solve() {
-    int n, x; cin >> n >> x;
+    int n; cin >> n;
 
     map<int, int> mp;
+    int mx = 0;
 
     for (int i = 0; i < n; i++)
     {
         int x; cin >> x;
         mp[x]++;
+        mx = max(mx, x);
     }
 
-    for (int i = 0; i < n; i++)
+    int mex = 1;
+
+    for (int i = 1; i <= n+1; i++)
     {
-        if (mp[i] == 0)
-        {
-            printf("%d\n", i);
-            return;
-        }
-        else if (mp[i] > 1)
-        {
-            mp[i+x] += mp[i]-1;
-        }
+        if (mp[mex] == 0) break;
+        mex++;
     }
 
-    printf("%d\n", n);
+    if (mex > mx) // case where piles are 1, 2, 3...mx
+    {
+        if (mx % 2 == 0) // Bob eliminates the last pile (when mx is the last pile and is 1), he wins
+        {
+            printf("Bob\n");
+        }
+        else
+        {
+            printf("Alice\n");
+        }
+    }
+    else
+    {
+        if (mex % 2 == 1) // Alice's turn once smallest pile is > 1, she wins
+        {
+            printf("Alice\n");
+        }
+        else
+        {
+            printf("Bob\n");
+        }
+    }
 }
 
 int main() {
