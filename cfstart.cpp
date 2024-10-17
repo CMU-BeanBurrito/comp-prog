@@ -20,18 +20,14 @@ int inv (int a, int m);
 ll kadane(vector<int>& a, int n);
 ll gcd(ll a, ll b);
 ll lcm(ll a, ll b);
+bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 
 void solve() {
     
 }
 
 int main() {
-    int t; cin >> t;
-    
-    while(t--) {
-        solve();
-    }
-    
+    solve();
     return 0;
 }
 
@@ -93,3 +89,9 @@ ll lcm(ll a, ll b)
 {
     return (a / gcd(a, b)) * b;
 }
+
+bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
+{
+    return p1.second < p2.second;
+}
+
