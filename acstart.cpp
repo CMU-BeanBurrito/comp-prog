@@ -25,6 +25,8 @@ ll mergesort(vector<int>& v, int l, int r); // l and r are inclusive (e.g. 0, n-
 void printi(vector<int>& v); // print vector of ints
 void printll(vector<ll>& v); // print vector of long long ints
 void printc(vector<char>& v); // print vector of chars
+void printiimp(map<int, int>& mp); // print int, int map
+void printcimp(map<int, int>& mp); // print char, int map
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 
 // PUT GLOBALS HERE
@@ -173,6 +175,16 @@ void printc(vector<char>& v)
     {
         printf("%c ", x);
     } printf("\n");
+}
+
+void printiimp(map<int, int>& mp)
+{
+    for (auto p : mp) printf("%d %d\n", p.first, p.second);
+}
+
+void printcimp(map<char, int>& mp)
+{
+    for (auto p : mp) printf("%c %d\n", p.first, p.second);
 }
 
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
