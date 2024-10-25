@@ -39,5 +39,10 @@ How does swapping affect this graph? Swapping a and b redirects 2 edges since th
 The answer is the sum for all cycles.
 
 # F: Kosuke's Sloth
+The Fibonacci sequence, modulo k, creates a repeating sequence: 0, 1, 1.....0, 1, 1.....
+
+We need to find the nth 0, so if we can find the distance between 0s (which is constant) then we can simply multiply this by n (modulo 1E9 + 7).
+
+To do this, we can simply brute force the Fibonacci sequence until we find the 1st 0 (consider f(0) = 0 as the 0th 0).
 
 # G: Sakurako and Chefir
