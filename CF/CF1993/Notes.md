@@ -30,19 +30,19 @@ Clearly, if any two switches' installation times differ by (2i+1)*k, the answer 
 
 We can see that a full cycle for any switch takes 2k time. Our strategy is to keep track of the contiguous window of time that all previously seen switches will be on, modulo 2k (sort of).
 
-Initially, this window is infinite since we have seen no switches - so all of them are vacuously on at all times. Call this segment [l, r], initialize to any segment that can capture the whole period. I used [0, 3*k].
+Initially, this window is infinite since we have seen no switches - so all of them are vacuously on at all times. Call this segment `[l, r]`, initialize to any segment that can capture the whole period. I used `[0, 3*k]`.
 
-For each switch, we find its installation time modulo 2k, call this il. Therefore this switch is on from [il, il+k-1]. Note that il+k-1 may exceed 2k, this is ok and [l, r] will be within [0, 2k+1] after integrating at most 2 switches.
+For each switch, we find its installation time modulo 2k, call this il. Therefore this switch is on from `[il, il+k-1]`. Note that `il+k-1` may exceed `2k`, this is ok and `[l, r]` will be within `[0, 2k-1]` after integrating at most 2 switches.
 
-To find the intersection of the segments, we first see if they overlap. If they do, our job is easy: l = max(l, il), r = min(r, ir).
+To find the intersection of the segments, we first see if they overlap. If they do, our job is easy: `l = max(l, il), r = min(r, ir)`.
 
-If they are disjoint, it could be due to modulo wrapping and there is actually an overlap. Decrement the greater segment ([l, r] or [il, ir]) by 2k. If they are still disjoint, there is no solution (-1).
+If they are disjoint, it could be due to modulo wrapping and there is actually an overlap. Decrement the greater segment (`[l, r] or [il, ir]`) by `2k`. If they are still disjoint, there is no solution (-1).
 
-Otherwise, we now have an overlap and can do l = max(l, il), r = min(r, ir).
+Otherwise, we now have an overlap and can do `l = max(l, il), r = min(r, ir)`.
 
-Once we are done iterating over each switch, we have [l, r]. Clearly, l is the earliest time in this window. The question is, how many cycles have elapsed - however many cycles it took for the last switch to be installed.
+Once we are done iterating over each switch, we have `[l, r]`. Clearly, l is the earliest time in this window. The question is, how many cycles have elapsed - however many cycles it took for the last switch to be installed.
 
-Find the last switch to be installed (maximum value in the input array) and round down to the nearest multiple of 2k, call it p. This switch was installed at time p + q. If l < q, this switch was not installed yet when the window of this cycle happened. So, go to the next cycle (p+2k+l).
+Find the last switch to be installed (maximum value in the input array) and round down to the nearest multiple of `2k`, call it `p`. This switch was installed at time `p + q`. If `l < q`, this switch was not installed yet when the window of this cycle happened. So, go to the next cycle (`p+2k+l`).
 
 # D: Med-imize
 
