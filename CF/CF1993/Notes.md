@@ -26,7 +26,7 @@ We try the 2nd strategy, using the largest odd and converting the evens in ascen
 Otherwise, it is num(evens).
 
 # C: Light Switches
-Clearly, if any two switches' installation times differ by (2i+1)*k, the answer is -1. This is because these two switches are completely desynced, as one will turn on right as the other turns off, forever.
+Clearly, if any two switches' installation times differ by `(2i+1)*k`, the answer is -1. This is because these two switches are completely desynced, as one will turn on right as the other turns off, forever.
 
 We can see that a full cycle for any switch takes 2k time. Our strategy is to keep track of the contiguous window of time that all previously seen switches will be on, modulo 2k (sort of).
 
@@ -43,6 +43,8 @@ Otherwise, we now have an overlap and can do `l = max(l, il), r = min(r, ir)`.
 Once we are done iterating over each switch, we have `[l, r]`. Clearly, l is the earliest time in this window. The question is, how many cycles have elapsed - however many cycles it took for the last switch to be installed.
 
 Find the last switch to be installed (maximum value in the input array) and round down to the nearest multiple of `2k`, call it `p`. This switch was installed at time `p + q`. If `l < q`, this switch was not installed yet when the window of this cycle happened. So, go to the next cycle (`p+2k+l`).
+
+How do we know that `l < q <= r` cannot be true? If this switch was installed at time q, its segment would be `[q, q+k-1]`. So its overlap with `[l, r]` would be `[q, r]`.
 
 # D: Med-imize
 
