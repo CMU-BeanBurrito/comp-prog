@@ -28,6 +28,7 @@ void printc(vector<char>& v); // print vector of chars
 void printiimp(map<int, int>& mp); // print int, int map
 void printcimp(map<int, int>& mp); // print char, int map
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
+ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
 
@@ -190,4 +191,19 @@ void printcimp(map<char, int>& mp)
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
 {
     return p1.second < p2.second;
+}
+
+ll fastexp(ll base, ll exp, ll m)
+{
+    ll res = 1LL;
+    base %= m;
+    while(exp > 0)
+    {
+        if (exp % 2 == 1) res *= base;
+        exp /= 2;
+        base *= base;
+        base %= m;
+        res %= m;
+    }
+    return res;
 }
