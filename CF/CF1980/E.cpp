@@ -28,17 +28,70 @@ void printc(vector<char>& v); // print vector of chars
 void printiimp(map<int, int>& mp); // print int, int map
 void printcimp(map<int, int>& mp); // print char, int map
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
 
 void solve() {
+    int n, m; cin >> n >> m;
+
+    vector<vector<int>> a (n, vector<int> (m));
+    vector<vector<int>> b (n, vector<int> (m));
+
+    for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) cin >> a[i][j];
+    for (int i = 0; i < n; i++) for (int j = 0; j < m; j++) cin >> b[i][j];
+
+    vector<set<int>> acol (m);
+    vector<set<int>> bcol (m);
+    for (int j = 0; j < m; j++)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            acol[j].insert(a[i][j]);
+            bcol[j].insert(b[i][j]);
+        }
+    }
+
+    sort(acol.begin(), acol.end());
+    sort(bcol.begin(), bcol.end());
+
+    for (int j = 0; j < m; j++)
+    {
+        if (acol[j] != bcol[j])
+        {
+            printf("NO\n");
+            return;
+        }
+    }
     
+    vector<set<int>> arow (n);
+    vector<set<int>> brow (n);
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            arow[i].insert(a[i][j]);
+            brow[i].insert(b[i][j]);
+        }
+    }
+
+    sort(arow.begin(), arow.end());
+    sort(brow.begin(), brow.end());
+
+    for (int i = 0; i < n; i++)
+    {
+        if (arow[i] != brow[i])
+        {
+            printf("NO\n");
+            return;
+        }
+    }
+
+    printf("YES\n");
 }
 
 int main() {
-    solve();
+    int t; cin >> t;
+    while(t--) solve();
     return 0;
 }
 
@@ -194,22 +247,3 @@ bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
     return p1.second < p2.second;
 }
 
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
-{
-    return p1.first+p1.second < p2.first+p2.second;
-}
-
-ll fastexp(ll base, ll exp, ll m)
-{
-    ll res = 1LL;
-    base %= m;
-    while(exp > 0)
-    {
-        if (exp % 2 == 1) res *= base;
-        exp /= 2;
-        base *= base;
-        base %= m;
-        res %= m;
-    }
-    return res;
-}

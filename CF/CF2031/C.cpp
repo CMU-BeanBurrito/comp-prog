@@ -28,17 +28,53 @@ void printc(vector<char>& v); // print vector of chars
 void printiimp(map<int, int>& mp); // print int, int map
 void printcimp(map<int, int>& mp); // print char, int map
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
 
 void solve() {
-    
+    int n; cin >> n;
+    vector<int> a (n);
+
+    for (int i = 0; i < n; i++) cin >> a[i];
+
+    int ans = 0;
+
+    for (int i = 1; i < n/2; i++)
+    {
+        int match1 = 0;
+        if (a[i] == a[i-1]) match1++;
+        if (a[n-i-1] == a[n-i]) match1++;
+
+        int match2 = 0;
+        if (a[i] == a[n-i]) match2++;
+        if (a[n-i-1] == a[i-1]) match2++;
+
+        if (match2 < match1)
+        {
+            int tmp = a[i];
+            a[i] = a[n-i-1];
+            a[n-i-1] = tmp;
+        }
+
+        ans += min(match1, match2);
+    }
+
+    if (n % 2 == 1)
+    {
+        if (a[n/2] == a[n/2+1]) ans++;
+        if (a[n/2] == a[n/2-1]) ans++;
+    }
+    else
+    {
+        if (a[n/2-1] == a[n/2]) ans++;
+    }
+
+    printf("%d\n", ans);
 }
 
 int main() {
-    solve();
+    int t; cin >> t;
+    while(t--) solve();
     return 0;
 }
 
@@ -192,24 +228,4 @@ void printcimp(map<char, int>& mp)
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
 {
     return p1.second < p2.second;
-}
-
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
-{
-    return p1.first+p1.second < p2.first+p2.second;
-}
-
-ll fastexp(ll base, ll exp, ll m)
-{
-    ll res = 1LL;
-    base %= m;
-    while(exp > 0)
-    {
-        if (exp % 2 == 1) res *= base;
-        exp /= 2;
-        base *= base;
-        base %= m;
-        res %= m;
-    }
-    return res;
 }

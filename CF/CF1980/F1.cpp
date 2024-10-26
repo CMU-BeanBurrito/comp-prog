@@ -28,17 +28,78 @@ void printc(vector<char>& v); // print vector of chars
 void printiimp(map<int, int>& mp); // print int, int map
 void printcimp(map<int, int>& mp); // print char, int map
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
 
 void solve() {
-    
+    int n, m, k; cin >> n >> m >> k;
+    vector<pair<int, int>> f (k);
+    map<pair<int, int>, int> mpf; // original index of each fountain
+
+    for (int i = 0; i < k; i++) 
+    {
+        cin >> f[i].first >> f[i].second;
+        mpf[make_pair(f[i].first, f[i].second)] = i;
+    }
+
+    sort(f.begin(), f.end());
+
+    ll alice = 0LL;
+    int mn = m+1;
+    int prow = n+1; // previous row
+
+    for (int i = k-1; i >= 0; i--)
+    {
+        // only care about leftmost fountain
+        if (i > 0 && f[i].first == f[i-1].first) continue;
+
+        alice += 1LL*(prow-f[i].first-1)*(mn-1);
+        mn = min(mn, f[i].second);
+        alice += (mn-1);
+        prow = f[i].first;
+    }
+
+    alice += 1LL*(prow-1)*(mn-1);
+
+    printf("%lld\n", alice);
+
+    mn = m+1;
+    map<int, int> mp;
+    vector<int> ans (k);
+
+    for (int i = k-1; i >= 0; i--)
+    {
+        //printf("%d %d\n", f[i].first, f[i].second);
+        if (i > 0 && f[i].first == f[i-1].first) //leftmost in row
+        {
+            ans[mpf[make_pair(f[i].first, f[i].second)]] = 0;
+            continue;
+        }
+        else if (mp[f[i].first] > 0) // bottom most in column
+        {
+            ans[mpf[make_pair(f[i].first, f[i].second)]] = 0;
+            continue;
+        }
+
+        mp[f[i].first]++;
+
+        if (f[i].second < mn)
+        {
+            ans[mpf[make_pair(f[i].first, f[i].second)]] = 1;
+            mn = f[i].second;
+        }
+        else
+        {
+            ans[mpf[make_pair(f[i].first, f[i].second)]] = 0;
+        }
+    }
+
+    printi(ans);
 }
 
 int main() {
-    solve();
+    int t; cin >> t;
+    while(t--) solve();
     return 0;
 }
 
@@ -194,22 +255,3 @@ bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
     return p1.second < p2.second;
 }
 
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
-{
-    return p1.first+p1.second < p2.first+p2.second;
-}
-
-ll fastexp(ll base, ll exp, ll m)
-{
-    ll res = 1LL;
-    base %= m;
-    while(exp > 0)
-    {
-        if (exp % 2 == 1) res *= base;
-        exp /= 2;
-        base *= base;
-        base %= m;
-        res %= m;
-    }
-    return res;
-}

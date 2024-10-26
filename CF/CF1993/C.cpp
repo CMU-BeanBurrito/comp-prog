@@ -28,17 +28,72 @@ void printc(vector<char>& v); // print vector of chars
 void printiimp(map<int, int>& mp); // print int, int map
 void printcimp(map<int, int>& mp); // print char, int map
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
 
 void solve() {
-    
+    int n, k; cin >> n >> k;
+    vector<int> a (n);
+
+    for (int i = 0; i < n; i++) cin >> a[i];
+
+    map<int, int> mp2k;
+
+    for (int i = 0; i < n; i++)
+    {
+        int desync = (a[i]+k)%(2*k);
+        if (mp2k[desync] > 0)
+        {
+            printf("-1\n");
+            return;
+        }
+        mp2k[a[i]%(2*k)]++;
+    }
+
+    int l = 0;
+    int r = 3*k;
+
+    for (int i = 0; i < n; i++)
+    {
+        int il = a[i]%(2*k);
+        int ir = il + (k-1);
+
+        if (l > ir) // disjoint, shift
+        {
+            l -= 2*k;
+            r -= 2*k;
+        }
+        else if (r < il) // disjoint, shift
+        {
+            il -= 2*k;
+            ir -= 2*k;
+        }
+
+        if (l > ir || r < il) // still disjoint, no answer
+        {
+            printf("-1\n");
+            return;
+        }
+
+        l = max(l, il);
+        r = min(r, ir);
+    }
+
+    int mx = 0;
+
+    for (int i = 0; i < n; i++) mx = max(mx, a[i]);
+
+    int ans = l + mx/(2*k)*(2*k);
+    if (l < mx%(2*k)) ans += 2*k;
+    printf("%d\n", ans);
 }
 
 int main() {
-    solve();
+    int t; cin >> t;
+    while(t--) 
+    {
+        solve();
+    }
     return 0;
 }
 
@@ -192,24 +247,4 @@ void printcimp(map<char, int>& mp)
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
 {
     return p1.second < p2.second;
-}
-
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
-{
-    return p1.first+p1.second < p2.first+p2.second;
-}
-
-ll fastexp(ll base, ll exp, ll m)
-{
-    ll res = 1LL;
-    base %= m;
-    while(exp > 0)
-    {
-        if (exp % 2 == 1) res *= base;
-        exp /= 2;
-        base *= base;
-        base %= m;
-        res %= m;
-    }
-    return res;
 }
