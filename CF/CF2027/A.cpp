@@ -34,11 +34,23 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    
+    int n; cin >> n;
+    int mxh = 0;
+    int mxw = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        int w, h; cin >> w >> h;
+        mxh = max(mxh, h);
+        mxw = max(mxw, w);
+    }
+
+    printf("%d\n", 2*(mxh+mxw));
 }
 
 int main() {
-    solve();
+    int t; cin >> t;
+    while(t--) solve();
     return 0;
 }
 

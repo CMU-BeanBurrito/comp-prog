@@ -34,11 +34,58 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
+    int x; cin >> x;
+
+    vector<int> a;
+
+    while(x > 0)
+    {
+        if (x % 2 == 0)
+        {
+            a.push_back(0);
+        }
+        else
+        {
+            a.push_back(1);
+        }
+
+        x /= 2;
+    }
+
+    a.push_back(0);
+
+    int left = 0;
+    int right = 0;
+
+    while(left < a.size() && right < a.size())
+    {
+        while(left < a.size() && a[left] != 1) left++;
+        right = left;
+        while(right < a.size() && a[right] == 1) right++;
+
+        if (right-left == 1)
+        {
+            left = right;
+            continue;
+        }
     
+        if (left >= a.size() || right >= a.size()) break;
+
+        a[right] = 1;
+        a[left] = -1;
+        for (int i = left+1; i < right; i++) a[i] = 0;
+        left = right;
+    }
+    
+    if (a[a.size()-1] == 0) a.pop_back();
+    
+    printf("%d\n", a.size());
+    printi(a);
 }
 
 int main() {
-    solve();
+    int t; cin >> t;
+    while(t--) solve();
     return 0;
 }
 

@@ -28,13 +28,40 @@ void printc(vector<char>& v); // print vector of chars
 void printiimp(map<int, int>& mp); // print int, int map
 void printcimp(map<int, int>& mp); // print char, int map
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
 
 void solve() {
+    vector<vector<bool>> board (8, vector<bool> (8, true));
+
+    for (int i = 0; i < 8; i++)
+    {
+        string s; cin >> s;
+        for (int j = 0; j < 8; j++)
+        {
+            if (s[j] == '#')
+            {
+                board[i][j] = false;
+
+                for (int k = 0; k < 8; k++)
+                {
+                    board[k][j] = false;
+                    board[i][k] = false;
+                }
+            }
+        }
+    }
     
+    int ans = 0;
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            if (board[i][j]) ans++;
+        }
+    }
+
+    printf("%d\n", ans);
 }
 
 int main() {
@@ -194,22 +221,3 @@ bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
     return p1.second < p2.second;
 }
 
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
-{
-    return p1.first+p1.second < p2.first+p2.second;
-}
-
-ll fastexp(ll base, ll exp, ll m)
-{
-    ll res = 1LL;
-    base %= m;
-    while(exp > 0)
-    {
-        if (exp % 2 == 1) res *= base;
-        exp /= 2;
-        base *= base;
-        base %= m;
-        res %= m;
-    }
-    return res;
-}

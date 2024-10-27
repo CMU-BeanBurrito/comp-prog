@@ -34,11 +34,25 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    
+    int n, m; cin >> n >> m;
+
+    if (m > n)
+    {
+        printf("NO\n");
+    }
+    else if ((n-m) % 2 == 0)
+    {
+        printf("YES\n");
+    }
+    else
+    {
+        printf("NO\n");
+    }
 }
 
 int main() {
-    solve();
+    int t; cin >> t;
+    while(t--) solve();
     return 0;
 }
 

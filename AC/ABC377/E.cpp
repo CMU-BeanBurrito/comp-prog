@@ -28,13 +28,75 @@ void printc(vector<char>& v); // print vector of chars
 void printiimp(map<int, int>& mp); // print int, int map
 void printcimp(map<int, int>& mp); // print char, int map
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
 
 void solve() {
+    int n; cin >> n;
+    ll k; cin >> k;
+    vector<int> p (n+1);
+    vector<bool> vis (n+1, false);
+
+    for (int i = 1; i <= n; i++)  cin >> p[i];
+
+
+    map<int, vector<int>> mp;
+    map<int, pair<int, int>> idmp;
+    int id = 0;
+
+    for (int i = 1; i <= n; i++)
+    {
+        if (vis[i]) continue;
+
+        int x = i;
+        while(!vis[x])
+        {
+            vis[x] = true;
+            idmp[x] = make_pair(id, mp[id].size());
+            mp[id].push_back(x); 
+            x = p[x];
+        }
+
+        id++;
+    }
     
+    vector<int> ans (n+1);
+    for (int i = 1; i <= n; i++)
+    {
+        int grp = idmp[p[i]].first;
+        int idx = idmp[p[i]].second;
+        int cyc = mp[grp].size();
+
+        ll mv = 1LL;
+        ll base = 2LL;
+        ll pw = k;
+        while(pw > 0)
+        {
+            if (pw % 2 == 1) mv = mv*base;
+            pw /= 2;
+            base *= base;
+            base %= cyc;
+            //printf("MVM %d\n", mv);
+            mv %= cyc;
+        }
+
+        if (mv == 0)
+        {
+            mv = cyc-1;
+            //mv--;
+        }
+        else
+        {
+            mv--;
+        }
+        
+        ans[i] = mp[grp][(mv+idx)%cyc];
+    }
+
+    for (int i = 1; i <= n; i++)
+    {
+        printf("%d ", ans[i]);
+    } printf("\n");
 }
 
 int main() {
@@ -192,24 +254,4 @@ void printcimp(map<char, int>& mp)
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
 {
     return p1.second < p2.second;
-}
-
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
-{
-    return p1.first+p1.second < p2.first+p2.second;
-}
-
-ll fastexp(ll base, ll exp, ll m)
-{
-    ll res = 1LL;
-    base %= m;
-    while(exp > 0)
-    {
-        if (exp % 2 == 1) res *= base;
-        exp /= 2;
-        base *= base;
-        base %= m;
-        res %= m;
-    }
-    return res;
 }

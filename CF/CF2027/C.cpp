@@ -32,13 +32,49 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
+map<ll, vector<ll>> mp;
+map<ll, bool> unvis;
+
+ll dfs(ll start)
+{
+    unvis[start] = false;
+    ll res = start;
+
+    for (auto x : mp[start])
+    {
+        if (unvis[x])
+        {
+            res = max(res, dfs(x));
+        }
+    }
+
+    return res;
+}
 
 void solve() {
-    
+    int n; cin >> n;
+    vector<ll> a (n+1);
+    vector<ll> need (n+1);
+
+    for (int i = 1; i <= n; i++) cin >> a[i];
+
+    for (int i = 1; i <= n; i++) need[i] = 0LL+a[i]+i-1-n;
+
+    for (int i = 1; i <= n; i++)
+    {
+        if (need[i] < 0) continue;
+        mp[need[i]].push_back(need[i]+i-1);
+        unvis[need[i]+i-1] = true;
+    }
+    ll ans = dfs(0LL);
+
+    printf("%lld\n", ans+n);
+    mp.clear();
 }
 
 int main() {
-    solve();
+    int t; cin >> t;
+    while(t--) solve();
     return 0;
 }
 
