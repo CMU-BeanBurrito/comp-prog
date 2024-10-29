@@ -48,9 +48,8 @@ void solve() {
     {
         ans[i] = ans[i-1];
 
-        //printf("%d %d\n", i, a[i]);
         int pwr = 0;
-        while(a[i] > 0 && (a[i] % 2) == 0)
+        while(a[i] > 0 && (a[i] % 2) == 0) // 2s on this index
         {
             pwr++;
             a[i] /= 2;
@@ -64,19 +63,19 @@ void solve() {
             if (a[i]*fastexp(2, pwr, MOD) > a[p.first])
             {
                 pwr += p.second;
-                ans[i] += 1LL*a[p.first];
-                ans[i] += 1LL*MOD*MOD;
-                ans[i] -= 1LL*a[p.first]*fastexp(2, p.second, MOD);
+                ans[i] += 1LL*a[p.first]; // add other index's base number
+                ans[i] += 1LL*MOD*MOD; // make sure next line doesn't make ans[i] negative
+                ans[i] -= 1LL*a[p.first]*fastexp(2, p.second, MOD); // remove the 2s from other index
                 ans[i] %= MOD;
-                er.push_back(make_pair(p.first, p.second));
+                er.push_back(make_pair(p.first, p.second)); // other index no longer has 2s
             }
         }
 
-        for (auto pr : er) twos.erase(pr);
+        for (auto pr : er) twos.erase(pr); // remove 2s from old indices
 
-        ans[i] += 1LL*a[i]*fastexp(2, pwr, MOD);
+        ans[i] += 1LL*a[i]*fastexp(2, pwr, MOD); // add 2s to new dest
         ans[i] %= MOD;
-        pair<int, int> prnew = make_pair(i, pwr);
+        pair<int, int> prnew = make_pair(i, pwr); // update our set
         if (pwr > 0) twos.insert(prnew);
     }
 
