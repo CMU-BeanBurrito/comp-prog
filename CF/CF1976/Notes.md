@@ -1,8 +1,20 @@
 Notes on solutions/approaches to problems
 
 # A: Verify Password
+We need all the digits to be at the front and sorted, then we need all the letters to follow and be sorted.
+By ASCII values, numerical digits are smaller than letters. So, the password should be sorted by ASCII value.
+Just iterate over the string, making sure every character's ASCII value is greater than or equal to the previous character's ASCII value.
 
 # B: Increase/Decrease/Copy
+Inevitably, we have to get all `a[i]` to `b[i]` and these operations cannot be avoided. This will cost us `s = sum(abs(a[i]-b[i])), for 0 <= i < n`. The question is, how do we optimize acquiring the last element `b[n]`?
+
+There are two cases:
+- Case 1: There exists an index `i` such that `a[i] <= b[n] <= b[i]`, or that `b[i] <= b[n] <= a[i]`.
+- Case 2: There is no such `i` as described above.
+
+Case 1: At some point, there will be an element in `a` that is equivalent to `b[n]`. Therefore, we just need to copy it to the end of `a` for 1 operation, but no increments or decrements are needed for `a[n]`. So our answer is `s+1`.
+
+Case 2: We will never have `b[n]` inside of `a` during our increments decrements. So, we need to find the closest one to minimize the operations. The closest any element in `a` will be to `b[n]` will be at the start or at the end, since `b[n]` is not within the range `[a[i], b[i]]` (or `[b[i], a[i]]`). So, we take the closest element to `b[n]` among all elements `a[i], b[i], 0 <= i < n`. The absolute difference `d` between this element and `b[n]` is the number of increments/decrements we will have to spend on `a[n]` after copying. So our answer is `s+d+1`.
 
 # C: Job Interview
 *explanation is 0-indexed
