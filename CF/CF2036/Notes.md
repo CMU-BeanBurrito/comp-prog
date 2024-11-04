@@ -62,5 +62,23 @@ We repeat this with all the other requirements for this query. When we find a ra
 Once we've processed all requirements we check to see if our viable range includes any countries at all. If it does, the answer is the first country in the viable range. If it does not, the answer is -1.
 
 # F: XORificator 3000
+First, establish a quick way `f(l, r)` to compute the XOR of a continuous segment `(l, r)`. This is equivalent to doing `f(0, l-1) ^ f(0, r)`.
+
+`f(0, x)`:
+- `if (x % 4 == 0), f(0, x) = x`
+- `if (x % 4 == 1), f(0, x) = 1`
+- `if (x % 4 == 2), f(0, x) = x ^ 1`
+- `if (x % 4 == 3), f(0, x) = 0`
+
+Initialize `ans = f(l, r)`, the XOR of all numbers in the input segment. Now we just need to find the XOR of the uninteresting numbers, call this `u`.
+
+Start by finding the first and last uninteresting numbers in `(l, r)`. If there aren't any, we are done.
+Otherwise, the uninteresting numbers will be `(x << i) + k, (x << i) + (1 << i) + k, (x << i) + (2 << i) + k, etc.`
+
+So, in `u`, the `i` least significant bits will be `0` if there are an even number of uninteresting numbers and `k` if there are an odd number of interesting bits. What about the more significant bits?
+
+If we right shift all uninteresting numbers by `i` bits, they will be consecutive numbers. So, we can use `f` to find the XOR of the most significant bits of the uninteresting numbers, call this `y`. To find `u`, we left shift `y` by `i` bits and then add the XOR of the `i` least significant bits as described above.
+
+Then `ans ^= u`.
 
 # G: Library of Magic
