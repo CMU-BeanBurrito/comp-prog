@@ -36,8 +36,6 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 void solve() {
     ll n; cin >> n;
 
-    bool three = true; // all 3 missing tomes are still in our search range
-
     int m = 60;
     ll resp;
 
@@ -56,38 +54,117 @@ void solve() {
         }
     }
 
-    while(three)
+    while(m > 0)
     {
-        printf("xor %lld %lld\n", (1LL << m), min((1LL << (m+1))-1, n)); // check top bit
+        printf("xor %lld %lld\n", (1LL << m), min((1LL << (m+1))-1, n)); // check top bit = 1
         cin >> resp;
 
-        if (resp == 0LL) // all 3 tomes in 1 <= x < 2^mxbit
+        if (resp == 0LL) // all 3 tomes in 1 <= x < 2^m
         {
             m--;
+            continue;
+        }
+
+        if (resp == total) // all 3 tomes in 2^m <= x <= min(n, 2^(m+1)-1)
+        {
+            ll left = 1LL << m;
+            ll right = min((1LL << (m+1))-1, n);
+
+            while(left < right)
+            {
+                ll mid = (right+left)/2;
+                printf("xor %lld %lld\n", left, mid);
+                cin >> resp;
+
+                if (resp == 0) // all 3 tomes in (mid+1, right)
+                {
+                    left = mid+1;
+                }
+                else if (resp == total) // all 3 tomes in (left, mid)
+                {
+                    right = mid;
+                }
+                else
+                {
+                    if ((resp & (1LL << m)) == 0) // 2 tomes in (left, mid)
+                    {
+                        a = total ^ resp; // 3rd tome
+
+                        right = mid;
+
+                        while(left < right) // try to separate the reamining 2
+                        {
+                            mid = (right+left)/2;
+                            printf("xor %lld %lld\n", left, mid);
+                            cin >> resp;
+
+                            if (resp == 0)
+                            {
+                                left = mid+1;
+                            }
+                            else if (resp == (total ^ a))
+                            {
+                                right = mid;
+                            }
+                            else
+                            {
+                                printf("ans %lld %lld %lld\n", a, resp, total ^ resp ^ a);
+                                return;
+                            }
+                        }
+                    }
+                    else // 1st tome alone in (left, mid)
+                    {
+                        a = resp; // 1st tome
+
+                        left = mid+1;
+
+                        while(left < right) // try to separate other 2
+                        {
+                            mid = (right+left)/2;
+                            printf("xor %lld %lld\n", left, mid);
+                            cin >> resp;
+
+                            if (resp == 0)
+                            {
+                                left = mid+1;
+                            }
+                            else if (resp == (total ^ a))
+                            {
+                                right = mid;
+                            }
+                            else
+                            {
+                                printf("ans %lld %lld %lld\n", a, resp, total ^ resp ^ a);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
         }
         else
         {
-            if ((resp & (1LL << m)) == 0)
+            if ((resp & (1LL << m)) == 0) // 2 tomes in (left, mid)
             {
-                printf("xor %lld %lld\n", 1LL, (1LL << m)-1);
-                cin >> a;
+                a = total ^ resp; // 3rd tome
 
                 ll left = 1LL << m;
-                ll right = min(2*left-1, n);
+                ll right = min((1LL << (m+1))-1, n);
 
-                while(left < right)
+                while(left < right) // try to separate other 2 tomes
                 {
                     ll mid = (right+left)/2;
                     printf("xor %lld %lld\n", left, mid);
                     cin >> resp;
 
-                    if (resp == (total ^ a)) // both in (left, mid)
-                    {
-                        right = mid;
-                    }
-                    else if (resp == 0) // both in (mid+1, right)
+                    if (resp == 0)
                     {
                         left = mid+1;
+                    }
+                    else if (resp == (total ^ a))
+                    {
+                        right = mid;
                     }
                     else
                     {
@@ -98,68 +175,34 @@ void solve() {
             }
             else
             {
-                printf("xor %lld %lld\n", 1LL, (1LL << m)-1);
-                cin >> resp;
+                a = resp; // 1st tome
 
-                if (resp == total)
+                ll left = 1LL;
+                ll right = (1LL << m) - 1;
+
+                while(left < right) // try to separate other 2 tomes
                 {
-                    ll left = 1LL << m;
-                    ll right = min(2*left-1, n);
-
                     ll mid = (right+left)/2;
                     printf("xor %lld %lld\n", left, mid);
                     cin >> resp;
 
-                    if (resp == total) // all in (left, mid)
-                    {
-                        right = mid;
-                    }
-                    else if ((resp & (1LL << m)) == 0) // 2 in (left, mid)
-                    {
-                        a = total ^ resp;
-                        right = mid;
-                    }
-                    else if (resp != 0) // 1 in (left, mid)
-                    {
-                        a = resp;
-                        left = mid+1;
-                    }
-                    else // all in (mid+1, right)
+                    if (resp == 0)
                     {
                         left = mid+1;
                     }
-
-                    
-                }
-                else
-                {
-                    a = resp;
-                    ll left = 1LL;
-                    ll right = (1LL << m) - 1;
-
-                    while(left < right)
+                    else if (resp == (total ^ a))
                     {
-                        ll mid = (right+left)/2;
-                        printf("xor %lld %lld\n", left, mid);
-                        cin >> resp;
-
-                        if (resp == (total ^ a)) // both in (left, mid)
-                        {
-                            right = mid;
-                        }
-                        else if (resp == 0) // both in (mid+1, right)
-                        {
-                            left = mid+1;
-                        }
-                        else
-                        {
-                            printf("ans %lld %lld %lld\n", a, resp, total ^ a ^ resp);
-                            return;
-                        }
+                        right = mid;
+                    }
+                    else
+                    {
+                        printf("ans %lld %lld %lld\n", a, resp, total ^ a ^ resp);
+                        return;
                     }
                 }
             }
         }
+
     }
 }
 
