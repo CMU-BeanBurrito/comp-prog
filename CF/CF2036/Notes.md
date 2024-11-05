@@ -82,3 +82,19 @@ If we right shift all uninteresting numbers by `i` bits, they will be consecutiv
 Then `ans ^= u`.
 
 # G: Library of Magic
+
+First, find the highest bit `m` in `n`. Query `2^m, min(2^(m+1)-1, n)`. There are a few outcomes (call the response `resp`):
+- `resp = 0`. This means that all 3 of the missing tomes are outside of this interval. So they are all inside `1, 2^m - 1`. why?
+ - If 1 tome was in this interval, `resp` would equal this tome.
+ - If 2 tomes `a, b` were in this interval, `resp` would equal `a ^ b`, which cannot be 0 as `a, b` are distinct.
+ - If 3 tomes were in this interval, `resp & 2^m = 1`, since all 3 numbers would have bit `m` set to 1.
+ - decrement `m` and repeat
+- `resp = total`, where `total = a ^ b ^ c`. All 3 tomes are in `2^m, min(2^(m+1)-1, n)`. Binary search to split off 1, then binary search to split the remaining 2
+- `resp != total && resp != 0`. This means that at least one of the tomes is outside the interval `2^m, min(2^(m+1)-1, n)`. There are two cases:
+ - `resp & (1LL << m) == 0`. 2 tomes are within `2^m, min(2^(m+1)-1, n)`. This means that the third one is `total ^ resp`. Now we binary search on `2^m, min(2^(m+1)-1, n)` to try to split the other two.
+ - `resp & (1LL << m) != 0`. 1 tome is within `2^m, min(2^(m+1)-1, n)`, it is `resp`. Binary search on `(1, (1LL << m) - 1` to split the other 2.
+
+Binary search:
+- if `resp = 0`, all remaining tomes are in the other half of the interval
+- if `resp = total*`, all remaining tomes are in this half (total* is the XOR total of remaining tomes, excluding found ones)
+- else, we found a tome
