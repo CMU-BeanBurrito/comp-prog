@@ -33,11 +33,11 @@ Which cells are in the same group? When the grid is rotated, a cell `(r, c)` mov
 
 To avoid double counting, we can iterate over certain bounds (note that for odd `n`, we can ignore the single cell in the middle since it never moves). We only need to iterate over one "quadrant", and we can choose this quadrant to be `0 <= row < (n-1)/2`, and `0 <= column <= (n-1)/2` See pictures for a visual representation of how this works for both even and odd `n`.
 
-![image info](images/1703E1.png)
+![image info](../../images/1703E1.png)
 
 Here we can see that our quadrant bounds are correct and do cover the whole square for odd `n` (aside from the single center cell which we can ignore). Our initial quadrant has rows `(0, 1)`, and columns `(0, 2)`.
 
-![image info](images/1703E2.png)
+![image info](../..images/1703E2.png)
 
 Here we can see that our quadrant bounds are correct and do cover the whole square for even `n`. Our initial quadrant has rows `(0, 2)` and columns `(0, 2)`.
 
