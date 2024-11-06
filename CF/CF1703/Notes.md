@@ -37,7 +37,7 @@ To avoid double counting, we can iterate over certain bounds (note that for odd 
 
 Here we can see that our quadrant bounds are correct and do cover the whole square for odd `n` (aside from the single center cell which we can ignore). Our initial quadrant has rows `(0, 1)`, and columns `(0, 2)`.
 
-![image info](../..images/1703E2.png)
+![image info](../../images/1703E2.png)
 
 Here we can see that our quadrant bounds are correct and do cover the whole square for even `n`. Our initial quadrant has rows `(0, 2)` and columns `(0, 2)`.
 
