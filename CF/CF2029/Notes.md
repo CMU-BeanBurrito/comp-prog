@@ -35,6 +35,17 @@ For `dp[2]`, we can either transition from `dp[1]` (contest `i` is the first con
 Final answer is `max(dp[1][n-1], dp[2][n-1])`, since it's possible we started skipping contests and didn't do anymore after.
 
 # D: Cool Graph
+Strategy: Split graph into connected components of size 1 or 2. In other words, reduce each node's degree to at most 1. Call this Step 1.
+
+Why? If we get to this point, we are in one of two cases:
+- all connected components are size 1. In this case, we are done.
+- we have only trees of size 1 and 2, and two trees can be merged into a single tree with one operation (so we can finish from this point in `O(n)` time). Call this Step 2.
+
+Step 1: We can reduce the degree of a node by 2 by performing an operation on it and two of its neighbors. So, we remove 2 edges (or 3, if the two neighbors are also adjacent to each other), and add one (or zero). We can see that by doing this repeatedly, we will eventually reduce every node's degree to 1. We can also see that this will take at most `O(m)` operations since we are removing 1 edge on each operation.
+
+Step 2: As described above, if there are no edges left, we are done. Otherwise, we need to build a final tree. Start with a tree of size 2. We take one of the nodes as the root of our tree. On each operation, we will perform an operation on the root, a neighbor of the root, and a node in another connected component from the root.
+
+This will take `O(n)` operations since we add at least 1 node to our tree on each operation.
  
 # E: Common Generator
 
