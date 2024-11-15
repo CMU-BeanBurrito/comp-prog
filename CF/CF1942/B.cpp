@@ -28,30 +28,42 @@ void printc(vector<char>& v); // print vector of chars
 void printiimp(map<int, int>& mp); // print int, int map
 void printcimp(map<int, int>& mp); // print char, int map
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
+bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
+ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
 
 void solve() {
-    ll n; cin >> n;
-    int k; cin >> k;
-    n %= MOD;
+    int n; cin >> n;
+    vector<int> a (n);
+    int mex = 0;
+    int next = 1;
+    vector<bool> used (n+1, false);
+    vector<int> p (n);
 
-    int a = 1 % k;
-    int b = 1 % k;
-    int i = 1;
+    for (int i = 0; i < n; i++) cin >> a[i];
 
-    while(a != 0)
+    for (int i = 0; i < n-1; i++)
     {
-        int tmp = a;
-        a = b;
-        b += tmp;
-        b %= k;
-        i++;
+        if (next-mex == a[i])
+        {
+            p[i] = mex;
+            used[p[i]] = true;
+            mex = next;
+            next++;
+            while(next < n+1 && used[next]) next++;
+        }
+        else
+        {
+            p[i] = mex-a[i];
+            used[p[i]] = true;
+            while(next < n+1 && used[next]) next++;
+        }
     }
 
-    // a is the ith number in the fibonacci sequence and is divisible by k
+    p[n-1] = mex;
 
-    printf("%d\n", n*i % MOD);
+    printi(p);
 }
 
 int main() {
@@ -212,3 +224,22 @@ bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
     return p1.second < p2.second;
 }
 
+bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
+{
+    return p1.first+p1.second < p2.first+p2.second;
+}
+
+ll fastexp(ll base, ll exp, ll m)
+{
+    ll res = 1LL;
+    base %= m;
+    while(exp > 0)
+    {
+        if (exp % 2 == 1) res *= base;
+        exp /= 2;
+        base *= base;
+        base %= m;
+        res %= m;
+    }
+    return res;
+}
