@@ -36,8 +36,34 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 void solve() {
     int n; cin >> n;
     vector<int> a (n);
+    vector<int> mxp (n); // maximum value in prefix
+    vector<int> mns (n); // minimum value in sufix
+    vector<int> ans (n);
 
-    
+    for (int i = 0; i < n; i++) cin >> a[i];
+
+    mxp[0] = a[0];
+    mns[n-1] = a[n-1];
+
+    for (int i = 1; i < n; i++) mxp[i] = max(a[i], mxp[i-1]);
+    for (int i = n-2; i >= 0; i--) mns[i] = min(a[i], mns[i+1]);
+
+    ans[n-1] = mxp[n-1];
+
+    for (int i = n-2; i >= 0; i--)
+    {
+        // if mxp[i] > mns[i+1], we can jump to mxp[i], then to mns[i+1], then to ans[i+1]
+        if (mxp[i] > mns[i+1])
+        {
+            ans[i] = ans[i+1];
+        }
+        else // we can never cross from (1, i) to (i+1, n), so we can only get to mxp[i]
+        {
+            ans[i] = mxp[i];
+        }
+    }
+
+    printi(ans);
 }
 
 int main() {
