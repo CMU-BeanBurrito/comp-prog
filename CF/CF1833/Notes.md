@@ -34,4 +34,12 @@ The maximum number of round dances is if each bamboo is treated a single round d
 
 # F: Ira and Flamenco
 
+A magnificent dance requires `m` dancers, all with distinct and consecutive skill levels.
+
+Find all consecutive streaks of at least length `m`.
+
+Then, for each streak of length `m`, the number of magnificent dances we can have is the product of the frequencies of each of the skill levels in this streak. 
+
+If we have a streak longer than m, we just use a sliding window to process each streak of length `m` within the larger streak (divide to remove the lowest skill dancers, multiply to add the next highest skilled dancers).
+
 # G: Ksyusha and Chinchilla
