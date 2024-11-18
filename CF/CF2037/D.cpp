@@ -53,14 +53,6 @@ void solve() {
         }
     }
 
-   /*  printf("DATA\n");
-    for (int i = 0; i < n; i++)
-    {
-        for (auto val : pwr[i]) printf("%d ", val);
-        printf("\n");
-    }
-    printf("ANS\n"); */
-
     multiset<int> saved;
     int used = 0;
 
