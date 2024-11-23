@@ -34,54 +34,40 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    int n; cin >> n;
-
-    if (n % 2 == 0)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+    int q; cin >> q;
+    
+    while(q--) {
+        int n; cin >> n;
+        
+        vector<int> v (n+1);
+        vector<bool> used (n+1, false);
+        
+        for (int i = 1; i <= n; i++) {
+            cin >> v[i];
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = i; j <= n; j++) {
+                if (v[j] == i) {
+                    if (j == i) break;
+                    
+                    int k = j;
+                    while(!used[k-1] && k > i && v[k-1] > i) {
+                        int tmp = v[k-1];
+                        v[k-1] = v[k];
+                        v[k] = tmp;
+                        used[k-1] = true;
+                        k--;
+                    }
+                    break;
+                }
+            }
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            cout << v[i] << " ";
+        } cout << endl;
     }
-
-    if (n < 27)
-    {
-        printf("-1\n");
-        return;
-    }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
 }
 
 int main() {

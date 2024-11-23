@@ -32,56 +32,61 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
+vector<set<int>> g (200001, set<int>());
+vector<bool> vis (200001, false);
+
+bool dfs(int u) // return value is whether this connected component is a cycle
+{
+    vis[u] = true;
+    bool cyc = true;
+
+    for (auto v : g[u])
+    {
+        if (g[u].size() == 1) cyc = false; // this is a bamboo
+        if (!vis[v]) cyc = cyc & dfs(v);
+    }
+
+    return cyc;
+}
+
 
 void solve() {
     int n; cin >> n;
 
-    if (n % 2 == 0)
+    for (int i = 1; i <= n; i++)
     {
-        for (int i = 0; i < n; i++)
+        int x; cin >> x;
+
+        // without, this check, we could create a double edge
+        // this would make a length 2 bamboo appear to be a length 2 cycle
+        if (g[i].find(x) == g[i].end())
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            g[i].insert(x);
+            g[x].insert(i);
+        }
     }
 
-    if (n < 27)
+    int cc = 0;
+    int bamboo = 0;
+
+    for (int i = 1; i <= n; i++)
     {
-        printf("-1\n");
-        return;
+        if (!vis[i]) 
+        {
+            cc++;
+            if (!dfs(i)) bamboo++;
+        }
     }
 
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
+    // maximum is if we do not connect any bamboos to each other
+    // minimum is if we connect all bamboos into 1 cycle
+    printf("%d %d\n", min(cc, cc-bamboo+1), cc);
 
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
+    for (int i = 1; i <= n; i++)
     {
-        a[i] = x + (i-1)/2;
+        g[i].clear();
+        vis[i] = false;
     }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
 }
 
 int main() {

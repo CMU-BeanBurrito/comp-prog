@@ -32,61 +32,48 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
-
+ 
 void solve() {
-    int n; cin >> n;
+    int n, k; cin >> n >> k;
+    vector<int> a (n);
+    vector<int> b (n);
+    vector<int> mx (n); // max amount of work an engineer will do
+    int wmx = 0; // sum of mx
+    vector<int> c (n);
 
-    if (n % 2 == 0)
+    for (int i = 0; i < n; i++) cin >> a[i];
+    for (int i = 0; i < n; i++) cin >> b[i];
+    for (int i = 0; i < n; i++) 
     {
-        for (int i = 0; i < n; i++)
+        mx[i] = a[i]/b[i];
+        wmx += mx[i];
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        int mn = k-(wmx-mx[i]); // minimum work required from this engineer
+
+        if (mn > mx[i]) // too much work to do
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            c[i] = 0;
+        }
+        else // do minimum work required to complete project and get bonus
+        {
+            c[i] = max(0, mn);
+
+            // not worth it to do this amount of work
+            if (b[i]*c[i] > a[i]) c[i] = 0;
+        }
+
+        k -= c[i];
+        wmx -= mx[i];
     }
 
-    if (n < 27)
-    {
-        printf("-1\n");
-        return;
-    }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
+    printi(c);
 }
 
 int main() {
-    int t; cin >> t;
-    while(t--) solve();
+    solve();
     return 0;
 }
 

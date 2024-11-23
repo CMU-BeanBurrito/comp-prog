@@ -34,59 +34,31 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    int n; cin >> n;
+    string n; cin >> n;
 
-    if (n % 2 == 0)
+    int one = 0;
+    int two = 0;
+    int three = 0;
+
+    for (int i = 0; i < 6; i++)
     {
-        for (int i = 0; i < n; i++)
-        {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+        if (n[i] == '1') one++;
+        if (n[i] == '2') two++;
+        if (n[i] == '3') three++;
     }
 
-    if (n < 27)
+    if (one == 1 && two == 2 && three == 3)
     {
-        printf("-1\n");
-        return;
+        printf("Yes\n");
     }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
+    else
     {
-        a[i] = x + (i-1)/2;
+        printf("No\n");
     }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
 }
 
 int main() {
-    int t; cin >> t;
-    while(t--) solve();
+    solve();
     return 0;
 }
 

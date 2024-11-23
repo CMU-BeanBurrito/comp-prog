@@ -34,54 +34,68 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    int n; cin >> n;
+    int n, m; cin >> n >> m;
+    map<int, int> mp;
+    vector<pair<int, int>> runs;
 
-    if (n % 2 == 0)
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i < n; i++)
+        int x; cin >> x;
+        mp[x]++;
+    }
+
+    ll ans = 0;
+    int last = -1;
+    int run = 0;
+
+    for (auto p : mp)
+    {
+        if (last == -1)
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            last = p.first;
+            run = 1;
+            continue;
+        }
+
+        if (p.first == last+1)
+        {
+            last = p.first;
+            run++;
+        }
+        else
+        {
+            if (run >= m) runs.push_back(make_pair(last-run+1, run));
+            
+            last = p.first;
+            run = 1;
+        }
     }
 
-    if (n < 27)
+    if (run >= m) runs.push_back(make_pair(last-run+1, run));
+
+    for (auto p : runs)
     {
-        printf("-1\n");
-        return;
+        ll prod = 1LL;
+        for (int i = p.first; i < p.first + m; i++)
+        {
+            prod *= mp[i];
+            prod %= MOD;
+        }
+        ans += prod;
+        ans %= MOD;
+
+        for (int i = p.first + m; i < p.first + p.second; i++)
+        {
+            prod *= mp[i];
+            prod %= MOD;
+            prod *= inv(mp[i-m], MOD);
+            prod %= MOD;
+            ans += prod;
+            ans %= MOD;
+        }
     }
 
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
+    printf("%lld\n", ans);
 }
 
 int main() {

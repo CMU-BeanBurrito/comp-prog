@@ -32,61 +32,44 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
-
+ 
 void solve() {
     int n; cin >> n;
+    int n21 = n;
+    int n18 = n;
+    int ans = 0;
 
-    if (n % 2 == 0)
+    // handle 25
+    ans += n/2;
+
+    // can get a 21 and 25 from 1 plank
+    if (n % 2 == 1)
     {
-        for (int i = 0; i < n; i++)
-        {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+        ans++;
+        n21--;
     }
 
-    if (n < 27)
+    // handle 21
+    ans += n21/2;
+
+    // can get 2 21s and an 18 from 1 plank
+    n18 -= (n21/2);
+
+    // can get a 21 and 2 18s from 1 plank
+    if (n21 % 2 == 1)
     {
-        printf("-1\n");
-        return;
+        ans++;
+        n18 -= 2;
     }
 
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
+    // handle 18
+    ans += max(0, divceil(n18, 3));
 
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
+    printf("%d\n", ans);
 }
 
 int main() {
-    int t; cin >> t;
-    while(t--) solve();
+    solve();
     return 0;
 }
 

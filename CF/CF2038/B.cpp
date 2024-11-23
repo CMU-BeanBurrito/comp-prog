@@ -32,56 +32,71 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
-
+bool test3 = false;
+ 
 void solve() {
     int n; cin >> n;
+    vector<int> a (n);
+    ll sum = 0LL;
 
-    if (n % 2 == 0)
+    for (int i = 0; i < n; i++)
     {
+        cin >> a[i];
+        sum += a[i];
+    }
+
+    int left = 0;
+    int right = sum/n + 1;
+    vector<int> tmp (n);
+    ll ans = LLONG_MAX;
+
+    while(left < right)
+    {
+        int mid = (left+right)/2;
+        bool good = true;
+        ll ops = 0LL; 
+
+        for (int i = 0; i < n; i++) tmp[i] = a[i];
+
         for (int i = 0; i < n; i++)
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            if (tmp[i%n] <= mid) continue;
+            int next = (i+1)%n;
+            int sub = (tmp[i%n]-mid) % 2 == 0 ? tmp[i%n]-mid : tmp[i%n]-mid+1;
+            tmp[i%n] -= sub;
+            tmp[next] += sub/2;
+            ops += sub/2;
+        }
+
+        for (int i = 0; tmp[i%n] > mid; i++)
+        {
+            int next = (i+1)%n;
+            int sub = (tmp[i%n]-mid) % 2 == 0 ? tmp[i%n]-mid : tmp[i%n]-mid+1;
+            tmp[i%n] -= sub;
+            tmp[next] += sub/2;
+            ops += sub/2;
+        }
+        for (int i = 1; i < n; i++)
+        {
+            if (tmp[i] != tmp[i-1])
+            {
+                good = false;
+                break;
+            }
+        }
+
+        if (good)
+        {
+            left = mid+1;
+            ans = min(ans, ops);
+        }
+        else
+        {
+            right = mid;
+        }
     }
-
-    if (n < 27)
-    {
-        printf("-1\n");
-        return;
-    }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
+    
+    printf("%lld\n", right == 0 ? -1LL : ans);
 }
 
 int main() {

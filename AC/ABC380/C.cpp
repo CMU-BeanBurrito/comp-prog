@@ -34,59 +34,73 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    int n; cin >> n;
+    int n, k; cin >> n >> k;
+    string s; cin >> s;
 
-    if (n % 2 == 0)
+    int x = 0; // last index of (k-1)th 1 block
+    int y = 0; // first index of kth 1 block
+    int z = 0; // last index of kth 1 block
+    int block = 0;
+    bool one = false;
+
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i < n; i++)
+        if (s[i] == '1' && !one)
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            one = true;
+            block++;
+            if (block == k-1)
+            {
+                x = i;
+            }
+            else if (block == k) 
+            {
+                y = i;
+                z = i;
+            }
+        }
+        else if (s[i] == '1' && one)
+        {
+            if (block == k-1)
+            {
+                x = i;
+            }
+            else if (block == k)
+            {
+                z = i;
+            }
+        }
+        else
+        {
+            one = false;
+        }
     }
 
-    if (n < 27)
+    for (int i = 0; i <= x; i++)
     {
-        printf("-1\n");
-        return;
+        printf("%d", s[i] == '1' ? 1 : 0);
     }
 
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
+    for (int i = y; i <= z; i++)
     {
-        a[i] = x + (i-1)/2;
+        printf("1");
     }
 
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
+    for (int i = x+1; i < y; i++)
     {
-        a[i] = x + (i-10)/2;
+        printf("0");
     }
 
-    x = 14;
-
-    for (int i = 27; i < n; i++)
+    for (int i = z+1; i < n; i++)
     {
-        a[i] = x + (i-27)/2;
+        printf("%d", s[i] == '1' ? 1 : 0);
     }
 
-    printi(a);
+    printf("\n");
 }
 
 int main() {
-    int t; cin >> t;
-    while(t--) solve();
+    solve();
     return 0;
 }
 

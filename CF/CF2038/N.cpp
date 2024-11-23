@@ -32,56 +32,22 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
-
+ 
 void solve() {
-    int n; cin >> n;
+    string s; cin >> s;
 
-    if (n % 2 == 0)
+    if (s[0] > s[2])
     {
-        for (int i = 0; i < n; i++)
-        {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+        printf("%c>%c\n", s[0], s[2]);
     }
-
-    if (n < 27)
+    else if (s[0] == s[2])
     {
-        printf("-1\n");
-        return;
+        printf("%c=%c\n", s[0], s[2]);
     }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
+    else
     {
-        a[i] = x + (i-1)/2;
+        printf("%c<%c\n", s[0], s[2]);
     }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
 }
 
 int main() {

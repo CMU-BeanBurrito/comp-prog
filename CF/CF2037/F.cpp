@@ -34,54 +34,66 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    int n; cin >> n;
+    int n, m, k; cin >> n >> m >> k;
+    vector<int> h (n);
+    vector<int> x (n);
 
-    if (n % 2 == 0)
+    for (int i = 0; i < n; i++) cin >> h[i];
+    for (int i = 0; i < n; i++) cin >> x[i];
+
+    int left = 0;
+    int right = 1'000'000'000; 
+    // any attacks beyond 1E9 will not defeat any additional enemies
+    // so if we can't do it with 1E9 attacks, it is impossible
+
+    while(left < right)
     {
+        int mid = (left+right+1)/2;
+        bool good = false;
+
+        vector<pair<int, int>> events (2*n);
+
         for (int i = 0; i < n; i++)
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            int dmg = divceil(h[i], mid);
+            int dist = m-dmg;
+
+            if (dist >= 0) events.push_back(make_pair(x[i]-dist, 1));
+            if (dist >= 0) events.push_back(make_pair(x[i]+dist+1, -1));
+        }
+
+        sort(events.begin(), events.end());
+
+        int kills = 0;
+        for (int i = 0; i < events.size(); i++)
+        {
+            kills += events[i].second;
+            if (i != events.size()-1 && events[i].first == events[i+1].first) continue;
+            if (kills >= k)
+            {
+                good = true;
+                break;
+            }
+        }
+
+        if (good)
+        {
+            right = mid-1;
+        }
+        else
+        {
+            left = mid;
+        }
     }
 
-    if (n < 27)
+    if (left == 1'000'000'000)
     {
         printf("-1\n");
-        return;
     }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
+    else
     {
-        a[i] = x + (i-1)/2;
+        printf("%d\n", left+1);
     }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
 }
 
 int main() {

@@ -1,48 +1,34 @@
 Notes on solutions/approaches to problems
 
-# A: Sakurako and Kosuke
-While this can be done in constant time, using the parity of n, during the contest I chose to just simulate it.
+# A: Penchick and Modern Monument
 
-# B: Sakurako and Water
-If two or more lakes are on the same "down-right" diagonal, their heights can be changed simultaneously. Furthermore, this is the only condition under which two (or more) lakes can have their heights changed simultaneously.
+Official editorial has a very good explanation.
 
-So, for each down-right diagonal, we find the deepest lake with height h. Then we can "fix" all lakes on this diagonal with |h| operations.
+# B: Penchick and Satay Sticks
+Claim: Each satay stick will only move by at most one position.
 
-Simply sum the total number of operations for all diagonals.
+Proof: 
+Case 1: Satay stick `i` has no neighbors that differ from stick `i` by 1 length. This stick cannot move at all in this position.
+Case 2: Satay stick `i` has 2 neighbors that differ from stick `i` by 1 length. After stick `i` swaps once, it will no longer have any neighbors that differ by length `1` except swapping back (which is pointless).
+Case 3: Satay stick `i` has one neighbor that differs from stick `i` by 1 length. After stick `i` swaps with this neighbor, it is now adjacent to the other stick that differs by length 1. We would only make both of these swaps if both of these neighbors were longer than stick `i` or both of the neighbors were shorter than stick `i`. This isn't possible as for both to differ from stick `i` by length 1, one would hae to be longer than `i` by 1 ,the other would have to be shorter than `i` by 1.
 
-# C: Sakurako's Field Trip
-Greedy solution - start on the outside (start and end) of the array and work inwards towards the middle. If swapping a pair is better than the current state, do so.
+In all cases, stick `i` cannot move more than 1 position. So each stick must be within 1 index of its sorted position.
 
-Sum up the disturbance and return.
+# C: Penchick and BBQ Buns
+*0-indexed
 
-# D: Kousuke's Assignment
+If `n` is even, we can just do `1 1 2 2 3 3 ....` as each filling is only used twice, and 1 index apart which is clearly a perfect square.
 
-Greedy solution - if we find a beautiful segment, take it, since any segments that we haven't seen that use previous elements will overlap with this segment.
+If `n` is odd, one filling needs to be used at least 3 times since no filling can be used just once. In order for a filling to be used 3 times in a valid fashion, the distances between the 3 positions must be the squares of a Pythagorean triple. For example, `(0, 9, 25)`. These indices are separated by distances `(9, 16, 25)`, which are all perfect squares. The smallest of these is `(9, 16, 25)`, which means that `n > 25` for this to work.
 
-If we do find a segment, afterwards, we only consider the suffix of the original array after this segment.
+If `n` is odd and `n <= 25`, the answer is `-1` and there is no solution because no Pythagorean triple can be used.
 
-In this suffix, keep track of all prefixes we have seen. If we see this prefix again, it means that there was a subarray (segment) that was beautiful. Reset our map since we no longer consider previous elements
+Otherwise, we can just put one particular filling in buns 0, 9, 25. Positions 1-8 can easily be filled by consecutive pairs. 22 and 26 can be another pair. Then 10-21 can be consecutive pairs, 23-24 can be a pair. For numbers greater than 27, just add more consecutive pairs. For example, for `n = 31`, 27-28 is a pair, 29-30 is a pair.
 
-# E: Sakurako, Kosuke, and the Permutation
-Re-frame the permutation as a graph. There are n nodes numbered 1 to n.
+# D: Penchick and Desert Rabbit
 
-There is an edge from i to j if and only if p[i] = j. There will be n edges, each node will have 1 edge entering it and 1 edge exiting it.
+Official editorial is very good.
 
-Based on the problem statement, we need every node to satisfy one of these conditions:
-- Be in its own cycle of 1 (edge pointing from itself, to itself)
-- Be in a cycle of 2 (2 nodes each pointing to each other).
+# E: Penchick and Chloe's Trees
 
-If we have a cycle of x nodes, we need to break it up into cycle of at most 2 nodes. In other words, we need to remove x-2 nodes. 
-
-How does swapping affect this graph? Swapping a and b redirects 2 edges since the edge pointing from u to a now points from u to b, and the edge pointing from v to b now points from v to a. This will also cause a split into 2 different cycles of size x-y and y. So, we need to do (x-2)/2, rounded up, operations to resolve a cycle of x > 2.
-
-The answer is the sum for all cycles.
-
-# F: Kosuke's Sloth
-The Fibonacci sequence, modulo k, creates a repeating sequence: 0, 1, 1.....0, 1, 1.....
-
-We need to find the nth 0, so if we can find the distance between 0s (which is constant) then we can simply multiply this by n (modulo 1E9 + 7).
-
-To do this, we can simply brute force the Fibonacci sequence until we find the 1st 0 (consider f(0) = 0 as the 0th 0).
-
-# G: Sakurako and Chefir
+# F: Penchick and Even Medians

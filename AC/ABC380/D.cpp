@@ -34,59 +34,48 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    int n; cin >> n;
+    string s; cin >> s;
+    int n = s.length();
+    int q; cin >> q;
 
-    if (n % 2 == 0)
+    while(q--)
     {
-        for (int i = 0; i < n; i++)
+        ll k; cin >> k; k--;
+
+        ll quot = k/n;
+        ll rem = k%n;
+        int flips = 0;
+
+        while(quot > 1)
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            if (quot % 2 == 1) flips++;
+            quot /= 2;
+        }
+
+        bool flip = ((flips+quot)%2==0) ? false : true;
+
+        char c = s[rem];
+
+        if (flip)
+        {
+            if (c < 'a')
+            {
+                c += ('a' - 'A');
+            }
+            else
+            {
+                c -= ('a' - 'A');
+            }
+        }
+
+        printf("%c ", c);
     }
 
-    if (n < 27)
-    {
-        printf("-1\n");
-        return;
-    }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
+    printf("\n");
 }
 
 int main() {
-    int t; cin >> t;
-    while(t--) solve();
+    solve();
     return 0;
 }
 

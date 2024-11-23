@@ -32,61 +32,72 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
-
+int n, m, d;
+vector<int> c (2000);
+vector<int> ans (2000);
+map<int, int> mp;
+ 
+bool check() {
+    for (int i = 1; i <= m; i++) {
+        if (mp[i]-mp[i-1]-(c[i-1]-1) > d) return false;
+    }
+    
+    if (n+1 - mp[m] - (c[m]-1) > d) return false;
+    
+    return true;
+}
+ 
 void solve() {
-    int n; cin >> n;
-
-    if (n % 2 == 0)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
+    cin >> n >> m >> d;
+    int total = d;
+    
+    c[0] = 1;
+    
+    for (int i = 1; i <= m; i++) {
+        cin >> c[i];
+        total += c[i]-1+d;
+    }
+    
+    if (total < n+1) {
+        cout << "NO" << endl;
         return;
     }
-
-    if (n < 27)
-    {
-        printf("-1\n");
-        return;
+    
+    cout << "YES" << endl;
+    
+    int diff = total - (n+1);
+    
+    vector<int> ans (n+1, 0);
+    
+    mp[0] = 0;
+    
+    for (int i = 1; i <= m; i++) {
+        mp[i] = mp[i-1] + c[i-1];
     }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
+    
+    int first = 1;
+    
+    while(!check() && first <= m) {
+        for (int i = first; i <= m; i++) {
+            mp[i] += d-1;
+        }
+        first++;
     }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
+    
+    
+    for (int i = 1; i <= m; i++) {
+        for (int x = mp[i]; x < mp[i] + c[i]; x++) {
+            ans[x] = i;
+        }
     }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
+    
+    for (int i = 1; i <= n; i++) {
+        cout << ans[i] << " ";
+    } cout << endl;
 }
 
 int main() {
-    int t; cin >> t;
-    while(t--) solve();
+    solve();
     return 0;
 }
 

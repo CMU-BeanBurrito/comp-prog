@@ -28,60 +28,45 @@ void printc(vector<char>& v); // print vector of chars
 void printiimp(map<int, int>& mp); // print int, int map
 void printcimp(map<int, int>& mp); // print char, int map
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
 
 void solve() {
     int n; cin >> n;
 
-    if (n % 2 == 0)
+    vector<vector<int>> a (n, vector<int> (n));
+
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            cin >> a[i][j];
+        }
     }
 
-    if (n < 27)
+    ll ans = 0LL;
+
+    for (int i = 0; i < n; i++)
     {
-        printf("-1\n");
-        return;
+        int mn = 0;
+        for (int j = 0; j < n-i; j++)
+        {
+            mn = min(mn, a[i+j][j]);
+        }
+        ans += abs(mn);
     }
 
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
+    for (int j = 1; j < n; j++)
     {
-        a[i] = x + (i-1)/2;
+        int mn = 0;
+        for (int i = 0; i < n-j; i++)
+        {
+            mn = min(mn, a[i][j+i]);
+        }
+        ans += abs(mn);
     }
 
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
+    printf("%lld\n", ans);
 }
 
 int main() {
@@ -240,24 +225,4 @@ void printcimp(map<char, int>& mp)
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
 {
     return p1.second < p2.second;
-}
-
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
-{
-    return p1.first+p1.second < p2.first+p2.second;
-}
-
-ll fastexp(ll base, ll exp, ll m)
-{
-    ll res = 1LL;
-    base %= m;
-    while(exp > 0)
-    {
-        if (exp % 2 == 1) res *= base;
-        exp /= 2;
-        base *= base;
-        base %= m;
-        res %= m;
-    }
-    return res;
 }

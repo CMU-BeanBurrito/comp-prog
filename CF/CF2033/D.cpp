@@ -28,60 +28,49 @@ void printc(vector<char>& v); // print vector of chars
 void printiimp(map<int, int>& mp); // print int, int map
 void printcimp(map<int, int>& mp); // print char, int map
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
-ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
 
 void solve() {
     int n; cin >> n;
+    vector<int> a (n+1);
 
-    if (n % 2 == 0)
+    for (int i = 1; i <= n; i++) cin >> a[i];
+
+    vector<ll> pref (n+1);
+    pref[0] = 0LL;
+
+    for (int i = 1; i <= n; i++)
     {
-        for (int i = 0; i < n; i++)
+        pref[i] = pref[i-1] + a[i];
+    }
+
+    map<ll, int> mp;
+    mp[0LL]++;
+    int seg = 0;
+    ll last = 0LL;
+
+    for (int i = 1; i <= n; i++)
+    {
+        pref[i] -= last;
+
+        if (a[i] == 0 || (mp[pref[i]] > 0))
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            seg++;
+            mp.clear();
+            mp[0]++;
+            last += pref[i];
+        }
+        else
+        {
+            mp[pref[i]]++;
+        }
+
+        //printf("ITH %d %d %lld\n", i, seg, last);
+        //for (auto p : mp) cout << p.first << " " << p.second << endl;
     }
 
-    if (n < 27)
-    {
-        printf("-1\n");
-        return;
-    }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
+    printf("%d\n", seg);
 }
 
 int main() {
@@ -240,24 +229,4 @@ void printcimp(map<char, int>& mp)
 bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
 {
     return p1.second < p2.second;
-}
-
-bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2)
-{
-    return p1.first+p1.second < p2.first+p2.second;
-}
-
-ll fastexp(ll base, ll exp, ll m)
-{
-    ll res = 1LL;
-    base %= m;
-    while(exp > 0)
-    {
-        if (exp % 2 == 1) res *= base;
-        exp /= 2;
-        base *= base;
-        base %= m;
-        res %= m;
-    }
-    return res;
 }

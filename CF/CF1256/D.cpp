@@ -35,53 +35,54 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 void solve() {
     int n; cin >> n;
+    ll k; cin >> k;
+    string s; cin >> s;
+    vector<int> ones (n);
+    ones[0] = (s[0] == '1') ? 1 : 0;
+    vector<char> ans;
 
-    if (n % 2 == 0)
+    for (int i = 1; i < n; i++)
     {
-        for (int i = 0; i < n; i++)
+        ones[i] = ones[i-1];
+        if (s[i] == '1') ones[i]++;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == '0')
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            if (ones[i] <= k)
+            {
+                ans.push_back('0');
+                k -= ones[i];
+            }
+            else
+            {
+                // these are the ones this 0 cannot pass
+                for (int j = 0; j < ones[i]-k; j++) ans.push_back('1');
+
+                ans.push_back('0');
+
+                // these are the ones we can afford to pass
+                for (int j = 0; j < k; j++) ans.push_back('1');
+
+                // rest of string
+                for (int j = i+1; j < n; j++) ans.push_back(s[j]);
+
+                // can't do anything else, print out ans
+                for (char c : ans) cout << c;
+                printf("\n");
+                return;
+            }
+        }
     }
 
-    if (n < 27)
-    {
-        printf("-1\n");
-        return;
-    }
+    // if we got here, it means we were able to get the minimum string
+    // all 0s have been pushed to the left, just add the ones
+    for (int j = 0; j < ones[n-1]; j++) ans.push_back('1');
 
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
+    for (char c : ans) cout << c;
+    printf("\n");
 }
 
 int main() {

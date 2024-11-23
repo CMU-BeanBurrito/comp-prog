@@ -34,59 +34,82 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    int n; cin >> n;
+    int n, q; cin >> n >> q;
+    
+    set<int> s;
+    map<int, pair<int, int>> mp;
+    map<int, int> count;
 
-    if (n % 2 == 0)
+    for (int i = 1; i <= n; i++)
     {
-        for (int i = 0; i < n; i++)
+        s.insert(i);
+        mp[i] = make_pair(i, i);
+        count[i] = 1;
+    }
+
+    while(q--)
+    {
+        int type; cin >> type;
+
+        if (type == 1)
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            int x, c; cin >> x >> c;
+
+            auto it = s.upper_bound(x);
+            it--;
+            int num = mp[*it].first - (*it) + 1;
+            bool ml = false; // merge with left neighbor?
+            bool mr = false; // merge with right neighbor?
+            auto it2 = it; auto it3 = it;
+
+            count[mp[*it].second] -= num;
+            count[c] += num;
+
+            if (it != s.begin())
+            {
+                it2 = it;
+                it2--;
+                if (mp[*it2].second == c) ml = true;
+            }
+            
+            it3++;
+            if (it3 != s.end())
+            {
+                if (mp[*it3].second == c) mr = true;
+            }
+
+            if (ml && mr)
+            {
+                mp[*it2].first = mp[*it3].first;
+                s.erase(*it3);
+                s.erase(*it);
+            }
+            else if (ml)
+            {
+                mp[*it2].first = mp[*it].first;
+                s.erase(*it);
+            }
+            else if (mr)
+            {
+                mp[*it].first = mp[*it3].first;
+                mp[*it].second = c;
+                s.erase(*it3);
+            }
+            else
+            {
+                mp[*it].second = c;
+            }
+        }
+        else
+        {
+            int c; cin >> c;
+            printf("%d\n", count[c]);
+        }
     }
-
-    if (n < 27)
-    {
-        printf("-1\n");
-        return;
-    }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
 }
 
 int main() {
-    int t; cin >> t;
-    while(t--) solve();
+    solve();
     return 0;
 }
 

@@ -35,53 +35,24 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 void solve() {
     int n; cin >> n;
+    map<int, int> mp;
 
-    if (n % 2 == 0)
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i < n; i++)
+        int x; cin >> x;
+        mp[x]++;
+    }
+
+    int prod = n-2;
+    
+    for (auto p : mp)
+    {
+        if (prod % p.first == 0 && mp[prod/p.first] > 0)
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            printf("%d %d\n", p.first, prod/p.first);
+            return;
+        }
     }
-
-    if (n < 27)
-    {
-        printf("-1\n");
-        return;
-    }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
 }
 
 int main() {

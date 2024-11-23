@@ -35,53 +35,113 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 void solve() {
     int n; cin >> n;
+    vector<int> s;
+    s.push_back(-1);
+    vector<int> vresp (n+1);
 
-    if (n % 2 == 0)
+    printf("? %d %d\n", 1, n);
+    int resp; cin >> resp; vresp[1] = resp;
+    if (resp == 0)
     {
-        for (int i = 0; i < n; i++)
+        printf("! IMPOSSIBLE\n");
+        return;
+    }
+
+    if (n == 2 && resp == 1)
+    {
+        printf("! 01\n");
+        return;
+    }
+
+    int hang = n;
+    int last0 = -1;
+
+    for (int i = 2; i < n; i++)
+    {
+        int x = resp;
+        printf("? %d %d\n", i, n);
+        cin >> resp; vresp[i] = resp;
+
+        if (resp == 0)
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
-    }
+            s.push_back(0);
+            last0 = i-1;
+            hang = i;
+            break;
+        }
+        else if (resp == x)
+        {
+            s.push_back(1); // this is s[i-1]
+        }
+        else
+        {
+            s.push_back(0); // this is s[i-1]
+            last0 = i-1;
+        }
 
-    if (n < 27)
+        if (i == n-1)
+        {
+            if (resp == 1)
+            {
+                s.push_back(0);
+                s.push_back(1);
+            }
+            else
+            {
+                printf("? %d %d\n", last0, n-2);
+                cin >> resp;
+                if (resp == vresp[last0])
+                {
+                    s.push_back(0);
+                    s.push_back(0);
+                }
+                else if (resp == vresp[last0]-1)
+                {
+                    s.push_back(1);
+                    s.push_back(0);
+                }
+                else
+                {
+                    s.push_back(1);
+                    s.push_back(1);
+                }
+            }
+            break;
+        }
+    }
+    int z = 0;
+    for (int i = hang; i < n; i++)
     {
-        printf("-1\n");
-        return;
+        printf("? %d %d\n", last0, i);
+        cin >> resp;
+
+        if (resp > z)
+        {
+            s.push_back(1);
+        }
+        else
+        {
+            s.push_back(0);
+        }
+
+        z = resp;
     }
 
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
+    if (hang != n)
     {
-        a[i] = x + (i-1)/2;
+        if (vresp[last0] > z)
+        {
+            s.push_back(1);
+        }
+        else
+        {
+            s.push_back(0);
+        }
     }
 
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
+    printf("! ");
+    for (int i = 1; i <= n; i++) printf("%d", s[i]);
+    printf("\n");
 }
 
 int main() {

@@ -32,56 +32,35 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
-
+bool test3 = false;
+ 
 void solve() {
     int n; cin >> n;
-
-    if (n % 2 == 0)
+    map<int, int> mp;
+    
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i < n; i++)
-        {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
+        int x; cin >> x;
+        mp[x]++;
+    }
+
+    vector<int> v;
+
+    for (auto p : mp)
+    {
+        for (int i = 0; i < p.second/2; i++) v.push_back(p.first);
+    }
+
+    if (v.size() < 4)
+    {
+        printf("NO\n");
         return;
     }
-
-    if (n < 27)
+    else
     {
-        printf("-1\n");
-        return;
+        printf("YES\n");
+        printf("%d %d %d %d %d %d %d %d\n", v[0], v[1], v[0], v[v.size()-1], v[v.size()-2], v[1], v[v.size()-2], v[v.size()-1]);
     }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
 }
 
 int main() {

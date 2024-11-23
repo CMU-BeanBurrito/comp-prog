@@ -34,54 +34,67 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    int n; cin >> n;
+    int n, m, L; cin >> n >> m >> L;
+    vector<int> l (n);
+    vector<int> r (n);
+    for (int i = 0; i < n; i++) cin >> l[i] >> r[i];
+    vector<int> x (m);
+    vector<int> v (m);
+    for (int i = 0; i < m; i++) cin >> x[i] >> v[i];
+    vector<multiset<int>> pwr (n);
 
-    if (n % 2 == 0)
+    int xptr = 0;
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i < n; i++)
+        while (xptr < m && x[xptr] < l[i])
         {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
+            pwr[i].insert(v[xptr]);
+            xptr++;
+        }
     }
 
-    if (n < 27)
+    multiset<int> saved;
+    int used = 0;
+
+    int jump = 1;
+    for (int i = 0; i < n; i++)
     {
-        printf("-1\n");
-        return;
+        int need = r[i]-l[i]+2;
+        for (auto p : pwr[i]) saved.insert(p);
+
+        if (jump < need)
+        {
+            vector<int> unsaved;
+            for (auto rit = saved.rbegin(); rit != saved.rend(); rit++)
+            {
+                if (jump < need)
+                {
+                    jump += *rit;
+                    used++;
+                    unsaved.push_back(*rit);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            for (auto us : unsaved)
+            {
+                auto it = saved.find(us);
+                saved.erase(it);
+            }
+
+            if (jump < need)
+            {
+                printf("-1\n");
+                return;
+            }
+        }
     }
 
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
+    printf("%d\n", used);
 
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
 }
 
 int main() {

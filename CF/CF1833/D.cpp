@@ -35,53 +35,69 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 void solve() {
     int n; cin >> n;
-
-    if (n % 2 == 0)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            printf("%d ", i/2 + 1);
-        } printf("\n");
-        return;
-    }
-
-    if (n < 27)
-    {
-        printf("-1\n");
-        return;
-    }
-
-    vector<int> a (n, -1);
-    a[0] = 1;
-    a[9] = 1;
-    a[25] = 1;
-    a[22] = 2;
-    a[26] = 2;
-    a[23] = 3;
-    a[24] = 3;
-
-    int x = 4;
-
-    for (int i = 1; i <= 8; i++)
-    {
-        a[i] = x + (i-1)/2;
-    }
-
-    x = 8;
-
-    for (int i = 10; i <= 21; i++)
-    {
-        a[i] = x + (i-10)/2;
-    }
-
-    x = 14;
-
-    for (int i = 27; i < n; i++)
-    {
-        a[i] = x + (i-27)/2;
-    }
-
-    printi(a);
+    
+    vector<int> v (n);
+    vector<int> ans (n);
+    
+    int fidx = 0; // index of n 
+    int sidx = 0; // index of n-1
+    
+    for (int i = 0; i < n; i++) {
+		cin >> v[i];
+		if (v[i] == n) {
+		    fidx = i;
+		} else if (v[i] == n-1) {
+		    sidx = i;
+		}
+	}
+	
+	if (n == 1) {
+	    cout << 1 << endl;
+	    return;
+	} else if (n == 2) {
+	    cout << v[1] << " " << v[0] << endl;
+	    return;
+	}
+	
+	int l, r;
+	
+	if (fidx == n-1) {
+	    r = fidx;
+	} else {
+	    if (fidx == 0) {
+	        if (sidx == n-1) {
+	            r = sidx;
+	        } else {
+	            r = sidx-1;
+	        }
+	    } else {
+	        r = fidx-1;
+	    }
+	}
+	
+	for (l = r-1; l > 0; l--) {
+	    if (v[l] < v[0]) break;
+	}
+	
+	l++;
+	
+	int ansidx = 0;
+	
+	for (int i = r+1; i < n; i++) {
+	    ans[ansidx++] = v[i];
+	}
+	
+	for (int i = r; i >= l; i--) {
+	    ans[ansidx++] = v[i];
+	}
+	
+	for (int i = 0; i < l; i++) {
+	    ans[ansidx++] = v[i];
+	}
+	
+	for (int i = 0; i < n; i++) {
+	    cout << ans[i] << " ";
+	} cout << endl;
 }
 
 int main() {
