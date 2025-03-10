@@ -280,7 +280,7 @@ void sieve()
  
         for (int j = 2*i; j <= 200000; j+=i)
         {
-            erat[i] = false;
+            erat[j] = false;
         }
     }
 }
