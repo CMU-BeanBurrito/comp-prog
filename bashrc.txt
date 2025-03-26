@@ -4,7 +4,7 @@ alias ac2='./ac2.sh'
 alias cf2='./cf2.sh'
 alias nt='./notes.sh'
 alias usaco='./usaco.sh'
-alias bd='g++ -Wall -o sol'
+alias bd='./build.sh`
 
 shopt -s histappend
 HISTCONTROL=ignoreboth
