@@ -90,102 +90,72 @@ void solve() {
 
     for (cowpair c : pairs)
     {
-        if (cows[c.cowa].dir == 'N' && cows[c.cowb].dir == 'N')
+        if (cows[c.cowa].dir == cows[c.cowb].dir) continue;
+        
+        if (cows[c.cowa].dir == 'E' && cows[c.cowb].dir == 'N')
+        {
+            int meetx = cows[c.cowb].x;
+            int meety = cows[c.cowa].y;
+
+            // no intersection of paths
+            if (cows[c.cowa].y < cows[c.cowb].y || cows[c.cowa].x > cows[c.cowb].x) continue;
+
+            // they would intersect, but at least one is stopped before the would-be intersection
+            if (cows[c.cowa].x + cows[c.cowa].grass < meetx || cows[c.cowb].y + cows[c.cowb].grass < meety) continue;
+
+            if (cows[c.cowa].y > cows[c.cowb].y && cows[c.cowa].x < cows[c.cowb].x && cows[c.cowa].y+cows[c.cowa].x == cows[c.cowb].x+cows[c.cowb].y) // reach intersection at same time
             {
-                if (cows[c.cowa].x == cows[c.cowb].x) // one cow trails the other
-                {
-                    if (cows[c.cowa].y < cows[c.cowb].y) // cow i trails cow j
-                    {
-                        cows[c.cowa].grass = min(cows[c.cowa].grass, cows[c.cowb].y - cows[c.cowa].y);
-                        cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
-                    }
-                    else // cow j trails cow i
-                    {
-                        cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
-                        cows[c.cowb].grass = min(cows[c.cowb].grass, cows[c.cowa].y - cows[c.cowb].y);
-                    }
-                }
+                cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
             }
-            else if (cows[c.cowa].dir == 'E' && cows[c.cowb].dir == 'E')
+            else if (cows[c.cowa].y - cows[c.cowb].y > cows[c.cowb].x - cows[c.cowa].x) // cow i reaches intersection first, cow j is stopped
             {
-                if (cows[c.cowa].y == cows[c.cowb].y) // one cow trails the other
-                {
-                    if (cows[c.cowa].x < cows[c.cowb].x || cows[c.cowa].x < cows[c.cowb].x) // cow i trails cow j
-                    {
-                        cows[c.cowa].grass = min(cows[c.cowa].grass, cows[c.cowb].x - cows[c.cowa].x);
-                        cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
-                    }
-                    else // cow j trails cow i
-                    {
-                        cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
-                        cows[c.cowb].grass = min(cows[c.cowb].grass, cows[c.cowa].x - cows[c.cowb].x);
-                    }
-                }
+                cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                cows[c.cowb].grass = min(cows[c.cowb].grass, cows[c.cowa].y - cows[c.cowb].y);
             }
-            else if (cows[c.cowa].dir == 'E' && cows[c.cowb].dir == 'N')
+            else                                                    // cow j reaches intersection first, cow i is stopped
             {
-                int meetx = cows[c.cowb].x;
-                int meety = cows[c.cowa].y;
-
-                // no intersection of paths
-                if (cows[c.cowa].y < cows[c.cowb].y || cows[c.cowa].x > cows[c.cowb].x) continue;
-
-                // they would intersect, but at least one is stopped before the would-be intersection
-                if (cows[c.cowa].x + cows[c.cowa].grass < meetx || cows[c.cowb].y + cows[c.cowb].grass < meety) continue;
-
-                if (cows[c.cowa].y > cows[c.cowb].y && cows[c.cowa].x < cows[c.cowb].x && cows[c.cowa].y+cows[c.cowa].x == cows[c.cowb].x+cows[c.cowb].y) // reach intersection at same time
-                {
-                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
-                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
-                }
-                else if (cows[c.cowa].y - cows[c.cowb].y > cows[c.cowb].x - cows[c.cowa].x) // cow i reaches intersection first, cow j is stopped
-                {
-                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
-                    cows[c.cowb].grass = min(cows[c.cowb].grass, cows[c.cowa].y - cows[c.cowb].y);
-                }
-                else                                                    // cow j reaches intersection first, cow i is stopped
-                {
-                    cows[c.cowa].grass = min(cows[c.cowa].grass, cows[c.cowb].x-cows[c.cowa].x);
-                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
-                }
+                cows[c.cowa].grass = min(cows[c.cowa].grass, cows[c.cowb].x-cows[c.cowa].x);
+                cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
             }
-            else
+        }
+        else
+        {
+            int meetx = cows[c.cowa].x;
+            int meety = cows[c.cowb].y;
+
+            if (cows[c.cowa].y > cows[c.cowb].y) // no intersection
             {
-                int meetx = cows[c.cowa].x;
-                int meety = cows[c.cowb].y;
-
-                if (cows[c.cowa].y > cows[c.cowb].y) // no intersection
-                {
-                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
-                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
-                    continue;
-                }
-                else if (cows[c.cowa].x < cows[c.cowb].x) // no intersection
-                {
-                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
-                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
-                    continue;
-                }
-
-                // they would intersect, but at least one is stopped before the would-be intersection
-                if (cows[c.cowa].y + cows[c.cowa].grass < meety || cows[c.cowb].x + cows[c.cowb].grass < meetx) continue;
-
-                if (cows[c.cowa].y < cows[c.cowb].y && cows[c.cowa].x > cows[c.cowb].x && cows[c.cowa].y+cows[c.cowa].x == cows[c.cowb].x+cows[c.cowb].y) // reach interesection at same time
-                {
-                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
-                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
-                }
-                else if (cows[c.cowb].y - cows[c.cowa].y > cows[c.cowa].x - cows[c.cowb].x) // cow j reaches intersection first, cow i is stopped
-                {
-                    cows[c.cowa].grass = min(cows[c.cowa].grass, cows[c.cowb].y - cows[c.cowa].y);
-                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
-                }
-                else                                                    // cow i reaches intersection first, cow j is stopped
-                {
-                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
-                    cows[c.cowb].grass = min(cows[c.cowb].grass, cows[c.cowa].x-cows[c.cowb].x);
-                }
+                cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+                continue;
             }
+            else if (cows[c.cowa].x < cows[c.cowb].x) // no intersection
+            {
+                cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+                continue;
+            }
+
+            // they would intersect, but at least one is stopped before the would-be intersection
+            if (cows[c.cowa].y + cows[c.cowa].grass < meety || cows[c.cowb].x + cows[c.cowb].grass < meetx) continue;
+
+            if (cows[c.cowa].y < cows[c.cowb].y && cows[c.cowa].x > cows[c.cowb].x && cows[c.cowa].y+cows[c.cowa].x == cows[c.cowb].x+cows[c.cowb].y) // reach interesection at same time
+            {
+                cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+            }
+            else if (cows[c.cowb].y - cows[c.cowa].y > cows[c.cowa].x - cows[c.cowb].x) // cow j reaches intersection first, cow i is stopped
+            {
+                cows[c.cowa].grass = min(cows[c.cowa].grass, cows[c.cowb].y - cows[c.cowa].y);
+                cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+            }
+            else                                                    // cow i reaches intersection first, cow j is stopped
+            {
+                cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                cows[c.cowb].grass = min(cows[c.cowb].grass, cows[c.cowa].x-cows[c.cowb].x);
+            }
+        }
     }
 
     for (cow c : cows)
