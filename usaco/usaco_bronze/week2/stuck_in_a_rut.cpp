@@ -32,123 +32,171 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
+#define GRASS_MAX 1'000'000'001
+
 typedef struct {
     char dir;
     int x;
     int y;
-    int milk = INT_MAX;
+    int grass = GRASS_MAX;
 } cow;
+
+typedef struct {
+    int cowa;
+    int cowb;
+    int meet = GRASS_MAX;
+} cowpair;
+
+bool sortcowpair (const cowpair &cpa, const cowpair &cpb)
+{
+    return cpa.meet < cpb.meet;
+}
+
 
 void solve() {
     int n; cin >> n;
     vector<cow> cows (n);
+    vector<cowpair> pairs (n*(n-1)/2);
 
     for (int i = 0; i < n; i++) cin >> cows[i].dir >> cows[i].x >> cows[i].y;
 
+    int idx = -1;
     for (int i = 0; i < n; i++)
     {
         for (int j = i+1; j < n; j++)
         {
-            if (cows[i].dir == cows[j].dir && cows[i].dir == 'N')
+            idx++;
+            pairs[idx].cowa = i;
+            pairs[idx].cowb = j;
+            
+            if (cows[i].dir == cows[j].dir) continue;
+
+            if (cows[i].dir == 'N' && cows[j].dir == 'E')
             {
-                if (cows[i].x == cows[j].x)
-                {
-                    if (cows[i].y < cows[j].y)
-                    {
-                        cows[i].milk = min(cows[i].milk, cows[j].y - cows[i].y);
-                        cows[j].milk = INT_MAX;
-                    }
-                    else
-                    {
-                        cows[i].milk = min(cows[i].milk, INT_MAX);
-                        cows[j].milk = min(cows[j].milk, INT_MAX);
-                    }
-                }
+                if (cows[i].y > cows[j].y || cows[i].x < cows[j].x) continue;
+
+                pairs[idx].meet = min(abs(cows[i].x-cows[j].x), abs(cows[i].y-cows[j].y));
             }
-            else if (cows[i].dir == cows[j].dir && cows[i].dir == 'E')
+            else // cows[i].dir == 'E' && cows[j].dir == 'N'
             {
-                if (cows[i].y == cows[j].y)
-                {
-                    if (cows[i].x < cows[j].x)
-                    {
-                        cows[i].milk = min(cows[i].milk, cows[j].x - cows[i].x);
-                        cows[j].milk = INT_MAX;
-                    }
-                    else
-                    {
-                        cows[i].milk = min(cows[i].milk, INT_MAX);
-                        cows[j].milk = min(cows[j].milk, INT_MAX);
-                    }
-                }
-            }
-            else if (cows[i].dir == 'E' && cows[j].dir == 'N')
-            {
-                if (cows[i].y < cows[j].y)
-                {
-                    cows[i].milk = min(cows[i].milk, INT_MAX);
-                    cows[j].milk = min(cows[j].milk, INT_MAX);
-                }
-                else if (cows[i].x > cows[j].x)
-                {
-                    cows[i].milk = min(cows[i].milk, INT_MAX);
-                    cows[j].milk = min(cows[j].milk, INT_MAX);
-                }
-                else if (cows[i].y > cows[j].y && cows[i].x < cows[j].x && cows[i].y+cows[i].x == cows[j].x+cows[j].y)
-                {
-                    cows[i].milk = min(cows[i].milk, INT_MAX);
-                    cows[j].milk = min(cows[j].milk, INT_MAX);
-                }
-                else if (cows[i].y - cows[j].y > cows[j].x - cows[i].x)
-                {
-                    cows[i].milk = min(cows[i].milk, INT_MAX);
-                    cows[j].milk = min(cows[j].milk, cows[i].y - cows[j].y);
-                }
-                else
-                {
-                    cows[i].milk = min(cows[i].milk, cows[j].x-cows[i].x);
-                    cows[j].milk = min(cows[j].milk, INT_MAX);
-                }
-            }
-            else
-            {
-                if (cows[i].y > cows[j].y)
-                {
-                    cows[i].milk = min(cows[i].milk, INT_MAX);
-                    cows[j].milk = min(cows[j].milk, INT_MAX);
-                }
-                else if (cows[i].x < cows[j].x)
-                {
-                    cows[i].milk = min(cows[i].milk, INT_MAX);
-                    cows[j].milk = min(cows[j].milk, INT_MAX);
-                }
-                else if (cows[i].y < cows[j].y && cows[i].x > cows[j].x && cows[i].y+cows[i].x == cows[j].x+cows[j].y)
-                {
-                    cows[i].milk = min(cows[i].milk, INT_MAX);
-                    cows[j].milk = min(cows[j].milk, INT_MAX);
-                }
-                else if (cows[j].y - cows[i].y > cows[i].x - cows[j].x)
-                {
-                    cows[i].milk = min(cows[i].milk, cows[j].y - cows[i].y);
-                    cows[j].milk = min(cows[j].milk, INT_MAX);
-                }
-                else
-                {
-                    cows[i].milk = min(cows[i].milk, INT_MAX);
-                    cows[j].milk = min(cows[j].milk, cows[i].x-cows[j].x);
-                }
+                if (cows[i].x > cows[j].x || cows[i].y < cows[j].y) continue;
+
+                pairs[idx].meet = min(abs(cows[i].x-cows[j].x), abs(cows[i].y-cows[j].y));
             }
         }
     }
 
+    sort(pairs.begin(), pairs.end(), sortcowpair);
+
+    for (cowpair c : pairs)
+    {
+        if (cows[c.cowa].dir == 'N' && cows[c.cowb].dir == 'N')
+            {
+                if (cows[c.cowa].x == cows[c.cowb].x) // one cow trails the other
+                {
+                    if (cows[c.cowa].y < cows[c.cowb].y) // cow i trails cow j
+                    {
+                        cows[c.cowa].grass = min(cows[c.cowa].grass, cows[c.cowb].y - cows[c.cowa].y);
+                        cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+                    }
+                    else // cow j trails cow i
+                    {
+                        cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                        cows[c.cowb].grass = min(cows[c.cowb].grass, cows[c.cowa].y - cows[c.cowb].y);
+                    }
+                }
+            }
+            else if (cows[c.cowa].dir == 'E' && cows[c.cowb].dir == 'E')
+            {
+                if (cows[c.cowa].y == cows[c.cowb].y) // one cow trails the other
+                {
+                    if (cows[c.cowa].x < cows[c.cowb].x || cows[c.cowa].x < cows[c.cowb].x) // cow i trails cow j
+                    {
+                        cows[c.cowa].grass = min(cows[c.cowa].grass, cows[c.cowb].x - cows[c.cowa].x);
+                        cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+                    }
+                    else // cow j trails cow i
+                    {
+                        cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                        cows[c.cowb].grass = min(cows[c.cowb].grass, cows[c.cowa].x - cows[c.cowb].x);
+                    }
+                }
+            }
+            else if (cows[c.cowa].dir == 'E' && cows[c.cowb].dir == 'N')
+            {
+                int meetx = cows[c.cowb].x;
+                int meety = cows[c.cowa].y;
+
+                // no intersection of paths
+                if (cows[c.cowa].y < cows[c.cowb].y || cows[c.cowa].x > cows[c.cowb].x) continue;
+
+                // they would intersect, but at least one is stopped before the would-be intersection
+                if (cows[c.cowa].x + cows[c.cowa].grass < meetx || cows[c.cowb].y + cows[c.cowb].grass < meety) continue;
+
+                if (cows[c.cowa].y > cows[c.cowb].y && cows[c.cowa].x < cows[c.cowb].x && cows[c.cowa].y+cows[c.cowa].x == cows[c.cowb].x+cows[c.cowb].y) // reach intersection at same time
+                {
+                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+                }
+                else if (cows[c.cowa].y - cows[c.cowb].y > cows[c.cowb].x - cows[c.cowa].x) // cow i reaches intersection first, cow j is stopped
+                {
+                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                    cows[c.cowb].grass = min(cows[c.cowb].grass, cows[c.cowa].y - cows[c.cowb].y);
+                }
+                else                                                    // cow j reaches intersection first, cow i is stopped
+                {
+                    cows[c.cowa].grass = min(cows[c.cowa].grass, cows[c.cowb].x-cows[c.cowa].x);
+                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+                }
+            }
+            else
+            {
+                int meetx = cows[c.cowa].x;
+                int meety = cows[c.cowb].y;
+
+                if (cows[c.cowa].y > cows[c.cowb].y) // no intersection
+                {
+                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+                    continue;
+                }
+                else if (cows[c.cowa].x < cows[c.cowb].x) // no intersection
+                {
+                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+                    continue;
+                }
+
+                // they would intersect, but at least one is stopped before the would-be intersection
+                if (cows[c.cowa].y + cows[c.cowa].grass < meety || cows[c.cowb].x + cows[c.cowb].grass < meetx) continue;
+
+                if (cows[c.cowa].y < cows[c.cowb].y && cows[c.cowa].x > cows[c.cowb].x && cows[c.cowa].y+cows[c.cowa].x == cows[c.cowb].x+cows[c.cowb].y) // reach interesection at same time
+                {
+                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+                }
+                else if (cows[c.cowb].y - cows[c.cowa].y > cows[c.cowa].x - cows[c.cowb].x) // cow j reaches intersection first, cow i is stopped
+                {
+                    cows[c.cowa].grass = min(cows[c.cowa].grass, cows[c.cowb].y - cows[c.cowa].y);
+                    cows[c.cowb].grass = min(cows[c.cowb].grass, GRASS_MAX);
+                }
+                else                                                    // cow i reaches intersection first, cow j is stopped
+                {
+                    cows[c.cowa].grass = min(cows[c.cowa].grass, GRASS_MAX);
+                    cows[c.cowb].grass = min(cows[c.cowb].grass, cows[c.cowa].x-cows[c.cowb].x);
+                }
+            }
+    }
+
     for (cow c : cows)
     {
-        if (c.milk == INT_MAX)
+        if (c.grass == GRASS_MAX)
         {
             printf("Infinity\n");
         }
         else
         {
-            printf("%d\n", c.milk);
+            printf("%d\n", c.grass);
         }
     }
 }
