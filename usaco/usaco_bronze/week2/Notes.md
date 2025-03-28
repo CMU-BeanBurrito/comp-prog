@@ -23,7 +23,7 @@ However, if we check the pairs in ascending order of how long it takes for the t
 
 To determine this order, we calculate how long it will take the two cows to reach the intersection of their paths (if one exists), and sort the pairs in ascending order of this time.
 
-First, define an "intersection point" between two cows/paths as the following: In the absence of all other cows, the intersection point is the point where the two cows' paths would cross. Paths are still considred to "intersect" even if one or both cows do not reach the intersection point. If cows paths concide (both going north, starting at the same x-coordinate, or both going east starting at the same y-coordinate), the intersection point is the starting point of the "leading" cow, the cow that started further in the direction they are both heading.
+First, define an "intersection point" between two cows/paths as the following: In the absence of all other cows, the intersection point is the point where the two cows' paths would cross. Paths are still considred to "intersect" even if one or both cows do not reach the intersection point.
 
 Conversely, we'll define paths "meet" as the actual meeting of the paths at the intersection point. The cows do not have to arrive at the intersection point at the same time, but they must both reach it at some point. Meeting is a subset of intersecting.
 
