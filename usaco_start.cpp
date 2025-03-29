@@ -34,8 +34,8 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    freopen("square.in", "r", stdin);
-    freopen("square.out", "w", stdout);
+    // freopen("square.in", "r", stdin);
+    // freopen("square.out", "w", stdout);
 
     
 }
