@@ -267,18 +267,19 @@ If it has been filtered out already, it is already known to be composite so we d
 
 The code below generates a lookup table in O(N log N) where N is the size of the table (in this case, 2E5). It will allow us to check the primality of numbers up to N in constant time. 
 ```
-vector<bool> erat (200001, true);
+#define ERATSIZE 200'000
+vector<bool> erat (ERATSIZE+1, true);
  
 void sieve()
 {
     erat[0] = false;
     erat[1] = false;
  
-    for (int i = 2; i*i <= 200000; i++)
+    for (int i = 2; i*i <= ERATSIZE; i++)
     {
         if (!erat[i]) continue;
  
-        for (int j = 2*i; j <= 200000; j+=i)
+        for (int j = 2*i; j <= ERATSIZE; j+=i)
         {
             erat[j] = false;
         }
