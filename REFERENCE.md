@@ -291,20 +291,21 @@ void sieve()
 However, it will also allow us to check the primality of numbers up to N^2 in O(N) time (we can check all primes in our sieve, if the number does not have any of them as factors, it is also prime). If we need to check multiple numbers that are betwen N and N^2, we can construct another vector with just the primes from our sieve (this takes O(N) time). This would make each query to numbers between N and N^2 take O(log N) time (after the vector of primes is constructed), as there are O(log N) primes in the first N numbers. Of course, make sure to account for integer overflow if N^2 exceeds INT_MAX (argument is long long in this case as 4E10 > INT_MAX).
 
 ```
-vector<bool> erat (200001, true);
+#define ERATSIZE 200'000
+vector<bool> erat (ERATSIZE+1, true);
 vector<int> primes;
 void sieve()
 {
     erat[0] = false;
     erat[1] = false;
  
-    for (int i = 2; i*i <= 200000; i++)
+    for (int i = 2; i*i <= ERATSIZE; i++)
     {
         if (!erat[i]) continue;
-        for (int j = 2*i; j <= 200000; j+=i) erat[i] = false;
+        for (int j = 2*i; j <= ERATSIZE; j+=i) erat[j] = false;
     }
 
-    for (int i = 0; i < 200001; i++)
+    for (int i = 0; i <= ERATSIZE; i++)
     {
         if (erat[i]) primes.push_back(i);
     }
@@ -315,6 +316,7 @@ bool check(ll n)
 {
     for (int p : primes)
     {
+        if (n == p) return true;
         if (n % p == 0) return false;
     }
 
