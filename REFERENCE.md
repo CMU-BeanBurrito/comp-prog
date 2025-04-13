@@ -39,7 +39,7 @@ To calculate the prefix sum of the blue square, we need the sum of the the orang
 The red square with the 'x' has the prefix sum of the red and orange squares.
 The yellow square with the 'x' has the prefix sum of the yellow and orange squares.
 
-If we add the red and yellow squares that have an 'x', we will have the sum of the orange squares times two, plus the sum of the red squares and yellow squares. So, we need to subtract the sum of the orange squares which is the orange square with the 'x'.
+If we add the red and yellow squares that have an 'x', we will have the sum of the orange squares times two, plus the sum of the red squares and yellow squares. So, we need to subtract the sum of the orange squares which is the orange square with the 'x', and lastly add the value of the blue square.
 
 ![image info](images/2D%20Prefix%20Sum%20Building.png)
 
@@ -199,7 +199,144 @@ int knapsack()
 # Basic Algorithms
 
 ## Binary Search
+Of course, classically used to find the location (or indicate the absence) of an element in a sorted array.
+However, in competitive programming, often used to find the minimum or maximum value that satisfies some criteria.
+More specifically, there is some critical value that satisfies some criteria. All values higher than it also satisfy this criteria, and none of the values below it do. We would like to find this value.
+- Note that sometimes the critical value is the maximum value that fulfills the criteria, all lesser values also fulfill it, but no greater values do, the same approach can be used with slight changes to the logic
 
+### Example
+
+There is some critical value `x` s.t. `f(x)` returns `True`. `f(y) = True` for all `y >= x`, and `f(y) = False` for all `y < x`. We want to find `x` (the lowest value that evaluates to `True`).
+We know that `1 <= x <= 100'000'000`. Our search space is then `[1, 100'000'000]`.
+
+We repeated choose the midpoint of our search space (in this first iteration, this would be 50'000'000). We evaluate `f(50'000'000)`.
+- If it evaluates to `False`, then we know that `[1, 49'999'999]` will all evaluate to `False`, and therefore do not need to be checked. So our search space becomes `[50'000'000, 100'000'000]`.
+- If it evaluates to `True`, then we know that `[50'000'001, 100'000'000]` will all evalute to `True`, but do not need to be searched since we want to find the lowest value that evaluates to `True`. Search space is now `[1, 50'000'000]`.
+
+In essence, our search space at any given time is the set of values that still might be the answer. It is easy to see that it halves in size on each iteration, as we discard one half after each evaluation. It therefore has a runtime of `O(Fn)` where `F` is the runtime of the evaluation itself (function `f`). Eventually only one value will remain (search space contains only one value) and that must be the answer.
+
+These examples require `f` to be "sorted", which is why every value greater than or equal to `x` evalutes to `False` and every value less than `x` evaluates to `True` (or vice versa). Another way of thinking about this is as that we are searching for the first `1` (or the last `0`) in an array that looks like `[0, 0, 0,...,0, 1, 1, 1....1]`. Or the first `0`/last `1` in an array that looks like `[1, 1, 1..., 1, 0, 0, 0.....0]`.
+
+### C++ Implementation (for finding minimum x that fits some criteria)
+
+```
+bool f(int x)
+{
+    ...
+    ...
+    ...
+    return True, or False
+}
+
+int binsearch()
+{
+    int left = 1;
+    int right = 100'000'000;
+
+    while(left < right)
+    {
+        int mid = (left+right)/2;
+
+        if (f(mid))
+        {
+            // mid could be the answer, but the values above it are not the minimum
+            right = mid;
+        }
+        else
+        {
+            // mid is not the answer, and none of the values below it evaluate to True either
+            left = mid+1;
+        }
+    }
+
+    // left == right at this point
+    return left;
+}
+```
+
+### C++ Implementation (for finding maximum x that fits some criteria)
+
+```
+bool f(int x)
+{
+    ...
+    ...
+    ...
+    return True, or False
+}
+
+int binsearch()
+{
+    int left = 1;
+    int right = 100'000'000;
+
+    while(left < right)
+    {
+        // Round up mid closer to right. This is because if left + 1 = right, mid will be left and could get stuck infinitely if f(mid) = False
+        int mid = (left+right+1)/2;
+
+        if (!f(mid))
+        {
+            // mid could be the answer, but the values below it are not the maximum
+            left = mid;
+        }
+        else
+        {
+            // mid is not the answer, and none of the values above it evaluate to False
+            right = mid-1;
+        }
+    }
+
+    // left == right at this point
+    return left;
+}
+```
+
+### C++ Implementation ("classic" setting, find first index with element x or report that none exists)
+```
+vector<int> a (n);
+
+int binsearch(int x) // x is element we are looking for
+{
+    int left = 0;
+    int right = n-1;
+
+    while(left < right)
+    {
+        int mid = (left+right)/2;
+
+        if (a[mid] == x)
+        {
+            // found the element, but we don't know if earlier indices also contain x
+            right = mid;
+        }
+        else if (a[mid] < x)
+        {
+            // element must be to the right, discard mid and everything to the left
+            left = mid+1;
+        }
+        else // a[mid] > x
+        {
+            // element must be to the left, discard mid and everything to the right
+            right = mid-1;
+        }
+    }
+
+    // at this point, left == right, or left > right (left == right+1)
+
+    if (left == right) // still need to check this index
+    {
+        // found it
+        if (a[left] == x) return x;
+
+        // x is not in this array
+        return -1;
+    }
+
+    // if left > right, we already checked all indices and x does not exist
+    return -1;
+}
+```
 ## Depth-First Search
 
 ## Breadth-First Search
@@ -267,18 +404,19 @@ If it has been filtered out already, it is already known to be composite so we d
 
 The code below generates a lookup table in O(N log N) where N is the size of the table (in this case, 2E5). It will allow us to check the primality of numbers up to N in constant time. 
 ```
-vector<bool> erat (200001, true);
+#define ERATSIZE 200'000
+vector<bool> erat (ERATSIZE+1, true);
  
 void sieve()
 {
     erat[0] = false;
     erat[1] = false;
  
-    for (int i = 2; i*i <= 200000; i++)
+    for (int i = 2; i*i <= ERATSIZE; i++)
     {
         if (!erat[i]) continue;
  
-        for (int j = 2*i; j <= 200000; j+=i)
+        for (int j = 2*i; j <= ERATSIZE; j+=i)
         {
             erat[j] = false;
         }
@@ -290,20 +428,21 @@ void sieve()
 However, it will also allow us to check the primality of numbers up to N^2 in O(N) time (we can check all primes in our sieve, if the number does not have any of them as factors, it is also prime). If we need to check multiple numbers that are betwen N and N^2, we can construct another vector with just the primes from our sieve (this takes O(N) time). This would make each query to numbers between N and N^2 take O(log N) time (after the vector of primes is constructed), as there are O(log N) primes in the first N numbers. Of course, make sure to account for integer overflow if N^2 exceeds INT_MAX (argument is long long in this case as 4E10 > INT_MAX).
 
 ```
-vector<bool> erat (200001, true);
+#define ERATSIZE 200'000
+vector<bool> erat (ERATSIZE+1, true);
 vector<int> primes;
 void sieve()
 {
     erat[0] = false;
     erat[1] = false;
  
-    for (int i = 2; i*i <= 200000; i++)
+    for (int i = 2; i*i <= ERATSIZE; i++)
     {
         if (!erat[i]) continue;
-        for (int j = 2*i; j <= 200000; j+=i) erat[i] = false;
+        for (int j = 2*i; j <= ERATSIZE; j+=i) erat[j] = false;
     }
 
-    for (int i = 0; i < 200001; i++)
+    for (int i = 0; i <= ERATSIZE; i++)
     {
         if (erat[i]) primes.push_back(i);
     }
@@ -314,6 +453,7 @@ bool check(ll n)
 {
     for (int p : primes)
     {
+        if (n == p) return true;
         if (n % p == 0) return false;
     }
 

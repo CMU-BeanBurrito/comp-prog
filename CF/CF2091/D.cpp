@@ -34,34 +34,33 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    // freopen("square.in", "r", stdin);
-    // freopen("square.out", "w", stdout);
+    int n, m, k; cin >> n >> m >> k;
 
-    int n; cin >> n;
+    int l = 1;
+    int r = m;
 
-    vector<pair<int, int>> cowsx (n); // sorted by x
-    vector<pair<int, int>> cowsy (n); // sorted by y
-
-    for (int i = 0; i < n; i++) cin >> cowsx[i].first >> cowsx[i].second;
-    for (int i = 0; i < n; i++) cowsy[i] = cowsx[i];
-
-    sort(cowsx.begin(), cowsx.begin());
-    sort(cowsy.begin(), cowsy.end(), sort2nd);
-
-
-    for (int i = 0; i < n; i++)
+    while(l < r)
     {
-        int x = cowsx[i].first + 1;
+        int bench = (l+r)/2;
 
-        for (int j = 0; j < n; j++)
+        ll mx = 1LL* n * (m - (m/(bench+1)));
+
+        if (mx >= k)
         {
-            int y = cowsy[i].second + 1;
+            r = bench;
+        }
+        else
+        {
+            l = bench+1;
         }
     }
+
+    printf("%d\n", l);
 }
 
 int main() {
-    solve();
+    int t; cin >> t;
+    while(t--) solve();
     return 0;
 }
 
