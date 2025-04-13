@@ -43,9 +43,9 @@ There may be other ways to do this problem (such as replacing columns with rows 
 There are 2 cases: `k|m`, or it does not.
 
 If `k|m`, and we do this (for example, `n=6, m=6, k=3`):
-`1 2 3 1 2 3`
-`1 2 3 1 2 3`
-`1 2 3 1 2 3`
+```1 2 3 1 2 3
+1 2 3 1 2 3
+1 2 3 1 2 3```
 
 This will not work. To resolve this, each row should be a cyclic shift of the previous row:
 `1 2 3 1 2 3`
