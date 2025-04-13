@@ -43,26 +43,26 @@ There may be other ways to do this problem (such as replacing columns with rows 
 There are 2 cases: `k|m`, or it does not.
 
 If `k|m`, and we do this (for example, `n=6, m=6, k=3`):
-`1 2 3 1 2 3
-1 2 3 1 2 3
-1 2 3 1 2 3`
+`1 2 3 1 2 3`
+`1 2 3 1 2 3`
+`1 2 3 1 2 3`
 
 This will not work. To resolve this, each row should be a cyclic shift of the previous row:
-`1 2 3 1 2 3
-2 3 1 2 3 1
-3 1 2 3 1 2`
+`1 2 3 1 2 3`
+`2 3 1 2 3 1`
+`3 1 2 3 1 2`
 
 It's easy to see that there will be no adjacent cells with identical elements.
 
 If `k` does not divide `m`, then we can safely do `1, 2, 3....k ` in order from left to right, top down (the same way one reads or writes across a page).
 
 For example: `n=6, m=4, k=3`
-`1 2 3 1
-2 3 1 2
-3 1 2 3
-1 2 3 1
-2 3 1 2
-3 1 2 3`
+`1 2 3 1`
+`2 3 1 2`
+`3 1 2 3`
+`1 2 3 1`
+`2 3 1 2`
+`3 1 2 3`
 
 It's also easy to see that this is valid.
 
