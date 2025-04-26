@@ -5,6 +5,7 @@ alias cf2='./cf2.sh'
 alias nt='./notes.sh'
 alias usaco='./usaco.sh'
 alias bd='./build.sh`
+alias int='./interact.sh'
 
 shopt -s histappend
 HISTCONTROL=ignoreboth
