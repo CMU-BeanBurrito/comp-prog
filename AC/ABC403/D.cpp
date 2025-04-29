@@ -34,48 +34,51 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 // PUT GLOBALS HERE
 
 void solve() {
-    int n; cin >> n;
+    int n, d; cin >> n >> d;
 
-    vector<int> a (n);
+    map<int, int> mp;
 
-    for (int i = 0; i < n; i++) cin >> a[i];
-
-    vector<int> odd;
-    vector<int> even;
-
-    for (int i = 0; i < n; i++)
-    {
-        if (a[i] % 2 == 0) even.push_back(a[i]);
-        if (a[i] % 2 == 1) odd.push_back(a[i]);
-    }
-
-    sort(even.begin(), even.end());
-    sort(odd.begin(), odd.end());
+    for (int i = 0; i < n; i++) {int x; cin >> x; mp[x]++;}
 
     int ans = 0;
 
-    int left = 0;
-    int right = 0;
-    bool done = false;
-
-    while(left < odd.size() && !done)
+    // special case: d = 0
+    if (d == 0)
     {
-        right++;
-        if (right >= odd.size())
+        for (auto p : mp) ans += p.second - 1;
+        printf("%d\n", ans);
+        return;
+    }
+
+    vector<vector<int>> g (d, vector<int>());
+    
+    for (auto p : mp) g[p.first % d].push_back(p.first);
+
+    for (int i = 0; i < d; i++)
+    {
+        if (g[i].size() < 2) continue;
+
+        vector<int> dp (g[i].size()+1, 0);
+
+        dp[0] = 0;
+        dp[1] = 0;
+
+        for (int j = 2; j <= g[i].size(); j++)
         {
-            right--;
-            done = true;
-            for (int i = left; i <= right; i++)
+            if (g[i][j-1] - g[i][j-2] > d)
             {
-                
+                dp[j] = dp[j-1];
+            }
+            else
+            {
+                dp[j] = min(dp[j-1] + mp[g[i][j-1]], dp[j-2] + mp[g[i][j-2]]);
             }
         }
 
-        if (odd[right]-odd[right-1] > 2)
-        {
-            
-        }
+        ans += dp[g[i].size()];
     }
+
+    printf("%d\n", ans);
 }
 
 int main() {
