@@ -59,6 +59,14 @@ Therefore, we only need to remove `n-k` elements from the original array.
 
 # E: Unpleasant Strings
 
+in the original string a, record the index of each occurrence of each letter
+
+then can check a[i][j] = jth occurrence of ith letter, in constant time
+
+for each distinct char c in t_i, if c appears in t_i tf[c] times, find a[c][tf[c]], t_i is a subsequence of max value of a[c][tf[c]] for all characters c, call this max value x 
+
+then, we need to find the character d with the minimal frequency g in a[x+1:], answer is g+1 (add g+1 d's to end)
+
 # F: Numbers and Strings
 
 # G: Modulo 3
