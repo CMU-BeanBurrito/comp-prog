@@ -32,7 +32,7 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
-#define MAXN 4'000'005
+#define MAXN 20
 vector<ll> fact (MAXN+1);
 vector<ll> invf (MAXN+1);
 
@@ -43,22 +43,38 @@ ll nck(ll n, ll k)
     return fact[n] * invf[k] % MOD * invf[n-k] % MOD;
 }
 
+void nck_preprocess()
+{
+    fact[0] = 1LL;
+    invf[0] = 1LL;
+ 
+    for (int i = 1; i <= MAXN; i++)
+    {
+        fact[i] = fact[i-1] * i % MOD;
+        invf[i] = inv(fact[i], MOD);
+    }
+
+}
+
 void solve() {
     int a, b, c, d; cin >> a >> b >> c >> d;
     int n = a + b + c + d;
 
-    // a > c
-    // a > d
-    // b > d
+    /**
+     * Rules as defined in problem statement:
+     * Every A must be left of all Cs
+     * Every A must be left of all Ds
+     * Every B must be left of all Ds
+     */
 
     /**
      * explanation using 1 indexing
      * observe that to uniquely define a lineup, we just need to pick positions for A's and C's
      * the last A cannot be beyond A+B, otherwise a C or D would be to the left of the last A
      * so, of the first A+B spots, we need to choose A of them for the A's
-     * of the remaining N-A-B spots, we need to choose C of them for the C's (a > c satisfied)
-     * now we go left to right using all the B's to fill in empty spots, then all the D's (b > d satisfied)
-     * there are at most B gaps to the left of the rightmost A, and we fill gaps with Bs first, so can't be any Ds to the left of any A (a > d satisfied)
+     * of the remaining N-A-B spots, we need to choose C of them for the C's (Rule 1 satisfied)
+     * now we go left to right using all the B's to fill in empty spots, then all the D's (Rule 2 satisfied)
+     * there are at most B gaps to the left of the rightmost A, and we fill gaps with Bs first, so can't be any Ds to the left of any A (Rule 3 satisfied)
      */
 
     /**
@@ -80,18 +96,13 @@ void solve() {
     }
 
     printf("%lld\n", ans);
+
+    //printll(fact);
+    //printll(invf);
 }
 
 int main() {
-    fact[0] = 1LL;
-    invf[0] = 1LL;
- 
-    for (int i = 1; i <= MAXN; i++)
-    {
-        fact[i] = fact[i-1] * i % MOD;
-        invf[i] = inv(fact[i], MOD);
-    }
-
+    nck_preprocess();
     solve();
     return 0;
 }
