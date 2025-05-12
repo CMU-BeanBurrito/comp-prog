@@ -343,7 +343,7 @@ int binsearch(int x) // x is element we are looking for
 
 ## Dijkstra's Algorithm
 
-# Number Theory and Primality
+# Number Theory, Primality and other Math
 
 ## Divisibility
 
