@@ -343,7 +343,7 @@ int binsearch(int x) // x is element we are looking for
 
 ## Dijkstra's Algorithm
 
-# Number Theory, Primality and other Math
+# Math and Number Theory
 
 ## Divisibility
 
@@ -351,14 +351,16 @@ Divisiblity by 7:
 
 Divide number into segmenets of 3 digits. If the number of digits is not divisible by 3, the incomplete segment should be the most significant digits. For example, `12345` would be broken up as `12` and `345`. Add each segment, but alternate the sum. For example, `123456789` will be `123 - 456 + 789 = 456`. Original number is divisible by 7 iff this sum is divisible 7 (in this case, it is not).
 
-## Consecutive Numbers
+## Primality
+
+### Consecutive Numbers
 - Consecutive numbers are coprime.
 
 gcd(x+1, x) must also divide x+1-x = 1. Trivially, only 1 can divide 1. So gcd(x+1, x) = 1. 
 
 Therefore x and x+1 are coprime.
 
-## Extended Euclidean Algorithm and Modular Inverse
+### Extended Euclidean Algorithm and Modular Inverse
 - Inputs: integers a, b
 - Outputs: integers x, y s.t. ax + by = gcd(a, b)
 
@@ -400,7 +402,7 @@ int inv (int a, int m) // modular inverse of a mod m
 }
 
 ```
-## Sieve of Eratosthenes
+### Sieve of Eratosthenes
 
 Used to quickly generate a lookup table for prime numbers (precomputed and used many times across many tests). The general idea is to slowly filter/sieve out composite numbers by taking a prime number p and eliminating all other numbers that have p as a factor.
 
@@ -430,7 +432,7 @@ void sieve()
 }
 ```
 
-## Checking larger numbers
+#### Checking larger numbers
 However, it will also allow us to check the primality of numbers up to N^2 in O(N) time (we can check all primes in our sieve, if the number does not have any of them as factors, it is also prime). If we need to check multiple numbers that are betwen N and N^2, we can construct another vector with just the primes from our sieve (this takes O(N) time). This would make each query to numbers between N and N^2 take O(log N) time (after the vector of primes is constructed), as there are O(log N) primes in the first N numbers. Of course, make sure to account for integer overflow if N^2 exceeds INT_MAX (argument is long long in this case as 4E10 > INT_MAX).
 
 ```
@@ -464,5 +466,41 @@ bool check(ll n)
     }
 
     return true;
+}
+```
+## Combinatorics
+
+In combinatorics problems, we frequently have to compute `n choose k` (or `(n choose k) mod M`), which is equal to `n! / [k! * (n-k)!]`. However, without preprocessing, calculating this quotient numerous times across many test cases when `n = O(1E6)` can take a while.
+
+The problem arises when we have to find the quotient, it is easy enough to compute `1!, 2!, 3!...n!` during preprocessing in `O(n)`. Then, we easily have the 3 components of the quotient: `n!, k!, (n-k)!`. This works well enough when `M` doesn't come into play and we can just multiply/divide to get the quotient. However, in modular arithmetic, in order to find `(a / b) mod M`, we need to take `(a mod M) * (inverse(b) modM)`, where `inverse(b)` is the modular inverse of `b` under `M`. To do this, we use the extended Euclidean algorithm.
+
+### Code
+
+Use this module to compute factorials and their inverses. Make sure to define `MAXN` and `MOD` appropriately.
+`nck_preprocess` can be inserted into `main` to be executed once prior to all test caes.
+
+```
+#define MAXN ???
+vector<ll> fact (MAXN+1);
+vector<ll> invf (MAXN+1);
+
+ll nck(ll n, ll k)
+{
+    if (n < k) return 0LL;
+    
+    return fact[n] * invf[k] % MOD * invf[n-k] % MOD;
+}
+
+void nck_preprocess(int n)
+{
+    fact[0] = 1LL;
+    invf[0] = 1LL;
+ 
+    for (int i = 1; i <= MAXN; i++)
+    {
+        fact[i] = fact[i-1] * i % MOD;
+        invf[i] = inv(fact[i], MOD);
+    }
+
 }
 ```
