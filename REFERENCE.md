@@ -470,14 +470,16 @@ bool check(ll n)
 ```
 ## Combinatorics
 
+### n choose k
 In combinatorics problems, we frequently have to compute `n choose k` (or `(n choose k) mod M`), which is equal to `n! / [k! * (n-k)!]`. However, without preprocessing, calculating this quotient numerous times across many test cases when `n = O(1E6)` can take a while.
 
 The problem arises when we have to find the quotient, it is easy enough to compute `1!, 2!, 3!...n!` during preprocessing in `O(n)`. Then, we easily have the 3 components of the quotient: `n!, k!, (n-k)!`. This works well enough when `M` doesn't come into play and we can just multiply/divide to get the quotient. However, in modular arithmetic, in order to find `(a / b) mod M`, we need to take `(a mod M) * (inverse(b) modM)`, where `inverse(b)` is the modular inverse of `b` under `M`. To do this, we use the extended Euclidean algorithm.
 
-### Code
+#### Code
 
-Use this module to compute factorials and their inverses. Make sure to define `MAXN` and `MOD` appropriately.
-`nck_preprocess` can be inserted into `main` to be executed once prior to all test caes.
+- Use this module to compute factorials and their inverses.
+- Make sure to define `MAXN` and `MOD` appropriately.
+- `nck_preprocess()` can be called in `main` to be executed once prior to all test cases.
 
 ```
 #define MAXN ???
@@ -491,7 +493,7 @@ ll nck(ll n, ll k)
     return fact[n] * invf[k] % MOD * invf[n-k] % MOD;
 }
 
-void nck_preprocess(int n)
+void nck_preprocess()
 {
     fact[0] = 1LL;
     invf[0] = 1LL;
