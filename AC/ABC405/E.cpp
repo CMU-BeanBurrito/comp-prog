@@ -96,9 +96,6 @@ void solve() {
     }
 
     printf("%lld\n", ans);
-
-    //printll(fact);
-    //printll(invf);
 }
 
 int main() {
