@@ -32,7 +32,7 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
-#define MAXN 20
+#define MAXN 4'000'005
 vector<ll> fact (MAXN+1);
 vector<ll> invf (MAXN+1);
 
