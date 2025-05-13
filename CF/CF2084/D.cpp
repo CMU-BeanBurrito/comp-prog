@@ -32,21 +32,18 @@ bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
 // PUT GLOBALS HERE
-#define sen 1'000'000 // sentinel value, can't use INT_MAX as a[i] must be <= 1E9
 
 void solve() {
     int n, m, k; cin >> n >> m >> k;
 
     int mex = min(n - (m*k), n / (m+1));
 
-    vector<int> ans (n, sen);
-    int filled = 0;
+    vector<int> ans (n);
 
-    for (int x = 0; x < mex && filled < n; x++)
+    for (int x = 0; x < mex; x++)
     {
         for (int i = x; i < n; i += max(mex, k))
         {
-            if (ans[i] == sen) filled++;
             ans[i] = x;
         }
     }
