@@ -35,6 +35,26 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 #define sen 1'000'000 // sentinel value, can't use INT_MAX as a[i] must be <= 1E9
 
 void solve() {
+
+    /**
+     * Observation: if we start a new group with fish i, fish i and all the fish to the right of i have their value increased by 1.
+     * 
+     * Denote the number of fish at i or to the right of i caught by Alice as x
+     * Denote the number of fish at i or to the right of i caught by Bob as y
+     * 
+     * If we start a new group with fish i, the difference between Bob and Alice's score increases by y-x.
+     * 
+     * Observation: starting new groups and their effects on the score as described above, are completely independent.
+     * 
+     * So, the general strategy is as follows:
+     * - each index is a potential location to start a new group
+     * - each index would change the difference (Bob score minus Alice score) by d[i] = y-x as described above
+     * - we want to pick as few indices as possible to reach k
+     * - so, we can sort these values of y-x, and greedily pick the largest ones.
+     * - clearly, some of these values will be negative, so if we run out of positive values without reaching k, the answer is negative
+     * - we can use prefix sum and binary search to quickly see whether we can reach k by only picking a certain number of start points
+     */
+    
     int n, k; cin >> n >> k;
 
     string s; cin >> s;
