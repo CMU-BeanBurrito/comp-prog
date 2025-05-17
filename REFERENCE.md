@@ -347,9 +347,15 @@ int binsearch(int x) // x is element we are looking for
 
 ## Divisibility
 
-Divisiblity by 7:
+Divisibility by 3:
+A number is divisible by 3 iff the sum of its digits is divisible by 3 (essentially same rule as 9).
+
+Divisibility by 7:
 
 Divide number into segmenets of 3 digits. If the number of digits is not divisible by 3, the incomplete segment should be the most significant digits. For example, `12345` would be broken up as `12` and `345`. Add each segment, but alternate the sum. For example, `123456789` will be `123 - 456 + 789 = 456`. Original number is divisible by 7 iff this sum is divisible 7 (in this case, it is not).
+
+Divisibiliby by 9:
+A number is divisible by 9 iff the sum of its digits is divisible by 9 (essentially same rule as 3).
 
 ## Primality
 
