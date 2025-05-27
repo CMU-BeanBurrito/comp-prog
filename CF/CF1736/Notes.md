@@ -1,17 +1,23 @@
 Notes on solutions/approaches to problems
 
-TODO 
+# A: Make A Equal to B
 
-# A:
+# B: Playing with GCD
+Suppose `a[i] = x` and `a[i+1] = y`.
 
-# B:
+Then, `b[i]` must be at least `LCM(a[i], a[i+1])`.
 
-# C:
+Generate `b`:
+- `b[1] = a[1]`
+- `b[n+1] = a[n]`
+- `b[i] = LCM(a[i-1], a[i])`
 
-# D:
+Then, check whether this is valid or not.
 
-# E:
+# C1: Good Subarrays (easy version)
 
-# F:
+# C2: Good Subarrays (hard version)
 
-# G:
+# E: Equal Binary Subsequences
+
+# F: Swap and Take
