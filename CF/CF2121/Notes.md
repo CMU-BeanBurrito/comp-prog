@@ -85,7 +85,17 @@ In step 3, we clearly do at most `n` operations, one for each index. So in total
 
 # E: Sponsor of Your Problems
 
-The numbers `l, r` can be broken down into 4 sections.
+The numbers `l, r` can be broken down into 4 sections:
+- Leading zeros
+  - if a digit is a leading zero for both numbers, this digit should be ignored
+- digit in `l` and digit in `r` are equal
+  - answer increases by 2 (the digit we pick will be equal to both)
+- digit in `l` precedes digit in `r`
+  - answer increases by 1 (the digit we pick will match either `l` or `r`)
+- digit in `l` is `9` and digit in `r` is `0`
+  - answer increases by 1 (the digit we pick will be either `9` or `0`)
+
+We will traverse these sections in order, once we leave a section, we will not return to it.
 
 # F: Yamakasi
 
