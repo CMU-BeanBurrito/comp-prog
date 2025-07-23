@@ -54,7 +54,7 @@ void solve()
     if (R-L+1 <= 210)
     {
         ll ans = 0;
-        for (int i = L; i <= R; i++)
+        for (ll i = L; i <= R; i++)
         {
             if (i % 2 != 0 && i % 3 != 0 && i % 5 != 0 && i % 7 != 0) ans++;
         }
@@ -62,7 +62,6 @@ void solve()
         printf("%lld\n", ans);
         return;
     }
-
 
     ll L210 = divceil(L, 210)*210;
     ll R210 = divceil(R, 210)*210;
