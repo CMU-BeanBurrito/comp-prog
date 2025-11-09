@@ -340,6 +340,77 @@ int binsearch(int x) // x is element we are looking for
 ## Depth-First Search
 
 ## Breadth-First Search
+Traverse a graph in "levels", visiting all nodes adjacent to the source before moving further outwards.
+
+### C++ Implementation (Base code)
+```
+#define MAXN [INSERT VALUE]
+vector<vector<int>> g (MAXN);
+vector<bool> vis (MAXN, false);
+queue<int> q;
+
+void bfs(int root)
+{
+    q.push(root)
+    vis[root] = true;
+
+    while(!q.empty())
+    {
+        int u = q.front();
+        q.pop();
+
+        for (int v : g[u])
+        {
+            if (!vis[v])
+            {
+                vis[v] = true;
+                q.push(v);
+            }
+        }
+    }
+}
+```
+
+### C++ Implementation (marking distance from source)
+Often, it is useful to record the distance of each vertex from the source during the traversal.
+To do so, we simply record the distance of a vertex as we push it on the queue.
+Its distance from the source is 1 greater than its parent's.
+
+```
+#define MAXN [INSERT VALUE]
+vector<vector<int>> g (MAXN);
+vector<bool> vis (MAXN, false);
+vector<int> dist (MAXN, INT_MAX);
+queue<int> q;
+
+void bfs(int root)
+{
+    q.push(root)
+    vis[root] = true;
+    dist[root] = 0;
+
+    while(!q.empty())
+    {
+        int u = q.front();
+        q.pop();
+
+        for (int v : g[u])
+        {
+            if (!vis[v])
+            {
+                vis[v] = true;
+                q.push(v);
+                dist[v] = dist[u]+1;
+            }
+        }
+    }
+}
+```
+
+### Variants and Applications
+BFS can be used with multiple sources simultaneously. To do this, push all source/roots onto the queue before any traversal actions.
+
+BFS can be used to bipartition a graph (use even and odd distances to make the two sets).
 
 ## Dijkstra's Algorithm
 
