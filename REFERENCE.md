@@ -583,3 +583,11 @@ void nck_preprocess()
 
 }
 ```
+
+# Graph Concepts/Algorithms
+
+## Bipartite Graphs
+A graph is bipartite if all vertices can be assigned to exactly one of two sets, and no vertex is adjacent to another vertex in the same set.
+
+### Bipartite Matching
+TODO: relation to network flow
