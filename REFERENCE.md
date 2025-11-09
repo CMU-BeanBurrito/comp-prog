@@ -591,3 +591,26 @@ A graph is bipartite if all vertices can be assigned to exactly one of two sets,
 
 ### Bipartite Matching
 TODO: relation to network flow
+
+## Topological Sorting
+A topological sorting is an ordering of a directed graph's vertices such that if there is an edge from vertex `u` to vertex `v`, then `u` precedes `v` in the ordering.
+
+A topological sorting can only be generated for a DAG (directed, acyclic graph).
+
+### Kahn's Algorithm
+Kahn's Algorithm can be used to generate a topological ordering.
+
+Begin by computing the in-degree (number of edges ending at a vertex) for each vertex.
+
+Push all vertices with an in-degree of 0 onto the queue. These vertices will go first in the topological sorting as no edge leads to them, therefore no vertices precede them.
+
+Until the queue is empty:
+- pop a vertex `v` from the queue, add it to the sorted list
+- decrement the in-degree of all of its children (processing `v` and its outward edges)
+- if any of these children now have an in-degree of 0, push them onto the queue
+
+#### C++ Implementation
+TODO: code
+
+#### Cycle Detection
+Kahn's Algorithm can be used to detect cycles. Kahn's Algorithm will terminate without processing vertices that were part of a cycle. They will not be added into the queue or the sorted list. Therefore, upon termination, if the sorted list contains less nodes than the connected component Kahn's was run on, the connected component contained a cycle.
