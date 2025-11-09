@@ -31,6 +31,10 @@ bool sort2nd(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 bool sortpairsum(const pair<ll, ll> &p1, const pair<ll, ll> &p2);
 ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
 
+/**
+ * Strategy:
+ */
+
 // PUT GLOBALS HERE
 
 void solve() {
