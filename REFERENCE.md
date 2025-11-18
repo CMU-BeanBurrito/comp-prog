@@ -545,6 +545,28 @@ bool check(ll n)
     return true;
 }
 ```
+
+#### Modified Sieve (Find all prime factors of a number)
+Sometimes, it may be useful to directly precompute the prime factors:
+
+```
+#define PFSIZE 200'005 
+vector<vector<int>> pf (PFSIZE+1);
+ 
+void genpf()
+{
+    for (int i = 2; i <= PFSIZE; i++)
+    {
+        if (!pf[i].empty()) continue;
+
+        for (int j = i; j <= PFSIZE; j += i)
+        {
+            pf[j].push_back(i);
+        }
+    }
+}
+```
+
 ## Combinatorics
 
 ### n choose k
