@@ -68,6 +68,10 @@ ll fastexp(ll base, ll exp, ll m); // quickly find base^exp mod m
  * - Begin with the root, move downwards towards destination.
  * - Note that each depth in this phase (less deep than d[n]) has only 1 remaining node.
  * 
+ * Proof of operation bound:
+ * - All nodes are destroyed except the destination (node n). This requires n-1 operations.
+ * - Before each destruction, a move operation might be required. This requires at most n-1 operations.
+ * - After each destruction, a move operation is required. This requires n-1 operations.
  */
 
 // PUT GLOBALS HERE
