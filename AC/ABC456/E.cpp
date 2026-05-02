@@ -92,7 +92,10 @@ void solve() {
     {
         for (int d = 0; d < w; d++)
         {
-            g[i*w + d].push_back(i*w + (d+1) % w);
+            if (hol[i][d] == 'o' && hol[i][(d+1) % w] == 'o')
+            {
+                g[i*w + d].push_back(i*w + (d+1) % w);
+            }
         }
     }
 
@@ -118,13 +121,13 @@ void solve() {
 
     kahn();
     bool ans;
-    if ((int)path.size() == n)
-    {
-        ans = true;
-    }
-    else
+    if ((int)path.size() == n*w) // no cycle
     {
         ans = false;
+    }
+    else // cycle
+    {
+        ans = true;
     }
 
     // clear globals
